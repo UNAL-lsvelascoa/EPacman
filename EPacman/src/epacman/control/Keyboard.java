@@ -3,7 +3,7 @@ package epacman.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Teclado implements KeyListener{
+public class Keyboard implements KeyListener{
 
     private final static int NUMERO_TECLAS = 1024;
     private boolean[] teclas = new boolean[NUMERO_TECLAS];

@@ -6,27 +6,30 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import epacman.control.Teclado;
+import epacman.control.Keyboard;
 import epacman.statesmachine.GestorDeEstados;
 
-public class SuperficieDeDibujo extends Canvas {
+public class MyCanvas extends Canvas {
 
     private final int ancho, alto;
-    private final Teclado teclado;
+    private final Keyboard keyboard;
 
-    public SuperficieDeDibujo(final int ancho, final int alto) {
+    public MyCanvas(final int ancho, final int alto) {
         this.ancho = ancho;
         this.alto = alto;
 
-        teclado = new Teclado();
-
+        keyboard = new Keyboard();
+        initMyCanvas();
+    }
+    
+    private void initMyCanvas(){
         /*
          * Hace que java no pueda forzar el repintado del canvas
          * Solo nosotros podremos repintar el canvas
          */
         setIgnoreRepaint(true);
         setPreferredSize(new Dimension(ancho, alto));
-        addKeyListener(teclado);
+        addKeyListener(keyboard);
         setFocusable(true);
         requestFocus();
     }
@@ -54,8 +57,8 @@ public class SuperficieDeDibujo extends Canvas {
         bufferS.show();
     }
 
-    public Teclado getTeclado() {
-        return teclado;
+    public Keyboard getKeyboard() {
+        return keyboard;
     }
 
     public int getAlto() {

@@ -3,7 +3,7 @@ package epacman.statesmachine.states.game;
 import java.awt.Graphics;
 import java.awt.Transparency;
 import epacman.statesmachine.EstadoJuego;
-import epacman.sprites.HojaDeSprites;
+import epacman.sprites.SpritesSheet;
 
 public class GestorDeJuego implements EstadoJuego {
 
@@ -13,7 +13,7 @@ public class GestorDeJuego implements EstadoJuego {
     private int enemigo2 = 30;
     private int enemigo3 = 40;
     private int enemigo4 = 50;
-    private HojaDeSprites hSPersonajes1 = new HojaDeSprites("/Multimedia/Sprites/Sprites Personajes 1.png", 32, 32, Transparency.TRANSLUCENT);
+    private SpritesSheet hSPersonajes1 = new SpritesSheet("/Multimedia/Sprites/Sprites Personajes 1.png", 32, 32, Transparency.TRANSLUCENT);
     /*private HojaDeSprites hSPersonajes2 = new HojaDeSprites("/Multimedia/Sprites/Sprites Personajes 2.png", 32, 32, Transparency.TRANSLUCENT);
      private HojaDeSprites hSPersonajes3 = new HojaDeSprites("/Multimedia/Sprites/Sprites Personajes 3.png", 32, 32, Transparency.TRANSLUCENT);
      private HojaDeSprites hSPersonajes4 = new HojaDeSprites("/Multimedia/Sprites/Sprites Personajes 4.png", 32, 32, Transparency.TRANSLUCENT);

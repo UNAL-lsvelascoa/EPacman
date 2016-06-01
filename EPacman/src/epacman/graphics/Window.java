@@ -3,16 +3,16 @@ package epacman.graphics;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-public class Ventana extends JFrame{
-    
+public class Window extends JFrame {
+
     private final String titulo;
-    
-    public Ventana(final String titulo, final SuperficieDeDibujo superficie){
+
+    public Window(final String titulo, final MyCanvas superficie) {
         this.titulo = titulo;
-        configurarVentana(superficie);
+        initWindow(superficie);
     }
-    
-    private void configurarVentana(final SuperficieDeDibujo superficie){
+
+    private void initWindow(final MyCanvas superficie) {
         setTitle(titulo);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -23,5 +23,5 @@ public class Ventana extends JFrame{
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
 }

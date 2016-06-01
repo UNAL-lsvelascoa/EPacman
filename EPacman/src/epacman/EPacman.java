@@ -1,7 +1,7 @@
 package epacman;
 
-import epacman.graphics.SuperficieDeDibujo;
-import epacman.graphics.Ventana;
+import epacman.graphics.MyCanvas;
+import epacman.graphics.Window;
 import epacman.statesmachine.GestorDeEstados;
 
 /**
@@ -19,8 +19,8 @@ public class EPacman {
     private String stringAPS = "APS", stringFPS = "FPS";
     private static int ancho, alto, aps = 0, fps = 0;
 
-    private SuperficieDeDibujo superficieD;
-    private Ventana ventana;
+    private MyCanvas superficieD;
+    private Window ventana;
     private GestorDeEstados gestorE;
 
     private EPacman(final String titulo, final int ancho, final int alto) {
@@ -31,8 +31,8 @@ public class EPacman {
 
     private void iniciarJuego() {
         running = true;
-        superficieD = new SuperficieDeDibujo(ancho, alto);
-        ventana = new Ventana(titulo, superficieD);
+        superficieD = new MyCanvas(ancho, alto);
+        ventana = new Window(titulo, superficieD);
         gestorE = new GestorDeEstados();
     }
 
@@ -66,7 +66,7 @@ public class EPacman {
     }
 
     private void actualizar() {
-        superficieD.getTeclado().actualizar();
+        superficieD.getKeyboard().actualizar();
         gestorE.actualizar();
         aps++;
     }
