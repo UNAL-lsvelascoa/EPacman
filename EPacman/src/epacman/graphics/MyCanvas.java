@@ -1,24 +1,22 @@
 package epacman.graphics;
 
+import epacman.control.ControlManager;
+import epacman.statesmachine.StatesManager;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-import epacman.control.Keyboard;
-import epacman.statesmachine.StatesManager;
 
 public class MyCanvas extends Canvas {
 
     private final int ancho, alto;
-    private final Keyboard keyboard;
 
     public MyCanvas(final int ancho, final int alto) {
         this.ancho = ancho;
         this.alto = alto;
 
-        keyboard = new Keyboard();
         initMyCanvas();
     }
     
@@ -29,12 +27,12 @@ public class MyCanvas extends Canvas {
          */
         setIgnoreRepaint(true);
         setPreferredSize(new Dimension(ancho, alto));
-        addKeyListener(keyboard);
+        addKeyListener(ControlManager.KEYBOARD);
         setFocusable(true);
         requestFocus();
     }
 
-    public void dibujar(StatesManager gestorE) {
+    public void paint(StatesManager gestorE) {
         BufferStrategy bufferS = getBufferStrategy();
         if (bufferS == null) {
             createBufferStrategy(3);
@@ -55,10 +53,6 @@ public class MyCanvas extends Canvas {
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
         bufferS.show();
-    }
-
-    public Keyboard getKeyboard() {
-        return keyboard;
     }
 
     public int getAlto() {

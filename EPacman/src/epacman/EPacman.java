@@ -57,22 +57,21 @@ public class EPacman {
             if (System.nanoTime() - referenciaContador > NANOS_POR_SEG) {
                 stringAPS = "APS: " + aps;
                 stringFPS = "FPS: " + fps;
-                System.out.println(stringAPS + " " + stringFPS);
+                //System.out.println(stringAPS + " " + stringFPS);
                 aps = 0;
                 fps = 0;
-                referenciaContador = System.nanoTime();
+                //referenciaContador = System.nanoTime();
             }
         }
     }
 
     private void actualizar() {
-        superficieD.getKeyboard().actualizar();
         gestorE.update();
         aps++;
     }
 
     private void dibujar() {
-        superficieD.dibujar(gestorE);
+        superficieD.paint(gestorE);
         fps++;
     }
 

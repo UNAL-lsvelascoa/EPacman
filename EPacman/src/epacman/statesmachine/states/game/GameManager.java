@@ -7,6 +7,7 @@ public class GameManager implements StateGame {
 
     private final MapManager mapManager = new MapManager();
     private final CharactersManager charactersManager = new CharactersManager();
+    
 
     @Override
     public void update() {
