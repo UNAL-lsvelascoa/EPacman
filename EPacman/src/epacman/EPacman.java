@@ -47,7 +47,7 @@ public class EPacman {
             referenciaActualizacion = inicioBucle;
             delta += tiempoTranscurrido / NANOS_POR_APS;
 
-            while (delta >= 20) {
+            while (delta >= 1) {
                 actualizar();
                 delta = 0;
             }
