@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import epacman.control.Keyboard;
-import epacman.statesmachine.GestorDeEstados;
+import epacman.statesmachine.StatesManager;
 
 public class MyCanvas extends Canvas {
 
@@ -34,7 +34,7 @@ public class MyCanvas extends Canvas {
         requestFocus();
     }
 
-    public void dibujar(GestorDeEstados gestorE) {
+    public void dibujar(StatesManager gestorE) {
         BufferStrategy bufferS = getBufferStrategy();
         if (bufferS == null) {
             createBufferStrategy(3);
@@ -46,7 +46,7 @@ public class MyCanvas extends Canvas {
 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, ancho, alto);
-        gestorE.dibujar(g);
+        gestorE.paint(g);
 
         /*
          * Esto es para pintar solamente cuando el monitor se actualice

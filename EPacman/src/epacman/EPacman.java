@@ -2,7 +2,7 @@ package epacman;
 
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
-import epacman.statesmachine.GestorDeEstados;
+import epacman.statesmachine.StatesManager;
 
 /**
  *
@@ -21,7 +21,7 @@ public class EPacman {
 
     private MyCanvas superficieD;
     private Window ventana;
-    private GestorDeEstados gestorE;
+    private StatesManager gestorE;
 
     private EPacman(final String titulo, final int ancho, final int alto) {
         this.titulo = titulo;
@@ -33,7 +33,7 @@ public class EPacman {
         running = true;
         superficieD = new MyCanvas(ancho, alto);
         ventana = new Window(titulo, superficieD);
-        gestorE = new GestorDeEstados();
+        gestorE = new StatesManager();
     }
 
     private void iniciarBuclePrincipal() {
@@ -67,7 +67,7 @@ public class EPacman {
 
     private void actualizar() {
         superficieD.getKeyboard().actualizar();
-        gestorE.actualizar();
+        gestorE.update();
         aps++;
     }
 

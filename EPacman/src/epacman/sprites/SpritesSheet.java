@@ -1,7 +1,7 @@
 package epacman.sprites;
 
 import java.awt.image.BufferedImage;
-import epacman.tools.CargadorDeRecursos;
+import epacman.tools.ResourcesLoader;
 
 public class SpritesSheet {
 
@@ -11,7 +11,7 @@ public class SpritesSheet {
 
     final private Sprite[] sprites;
 
-    private static final CargadorDeRecursos cargador = new CargadorDeRecursos();
+    private static final ResourcesLoader cargador = new ResourcesLoader();
 
     public SpritesSheet(final String ruta, final int anchoSprites, final int altoSprites, final int transparente) {
         BufferedImage imagen;
