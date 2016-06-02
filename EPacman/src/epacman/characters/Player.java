@@ -1,5 +1,7 @@
 package epacman.characters;
 
+import epacman.BoardMatrix;
+import epacman.Constants;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
 import static epacman.characters.Character.squareSide;
@@ -15,41 +17,35 @@ import java.awt.Transparency;
 public class Player implements Character {
 
     private SpritesSheet spritesSheet;
-    private int x;
-    private int y;
+    private int xPixel;
+    private int yPixel;
+    private int xSprite;
+    private int ySprite;
+    private int indexPosition;
+    private final double velocity = 2.0;
     private int currentIndexSprite = 0;
     private int counterAnimation = 0;
     private int direction = 0;
+    private int predirection = 0;
     private boolean animateOrder;
 
     public Player(int x, int y, String uriSpriteSheet) {
         initPlayer(x, y, uriSpriteSheet);
     }
 
-    private void initPlayer(int x, int y, String uriSpriteSheet) {
-        this.x = x;
-        this.y = y;
+    private void initPlayer(int xSprite, int ySprite, String uriSpriteSheet) {
+        this.xPixel = xSprite * 32;
+        this.yPixel = ySprite * 32;
+        this.xSprite = xSprite;
+        this.ySprite = ySprite;
+        this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, 32, 32, Transparency.TRANSLUCENT);
     }
 
     @Override
     public void update() {
-        if (ControlManager.KEYBOARD.isLeft()) {
-            direction = 0;
-        } else {
-            if (ControlManager.KEYBOARD.isUp()) {
-                direction = 1;
-            } else {
-                if (ControlManager.KEYBOARD.isRight()) {
-                    direction = 2;
-                } else {
-                    if (ControlManager.KEYBOARD.isDown()) {
-                        direction = 3;
-                    }
-                }
-            }
-        }
-
+        changeDirection();
+        movePlayer();
         if (counterAnimation == animationDuration) {
             if (currentIndexSprite == quantitySprites - 1) {
                 animateOrder = false;
@@ -67,16 +63,85 @@ public class Player implements Character {
         } else {
             counterAnimation++;
         }
-        System.out.println(direction);
     }
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), (x * 32) - ((squareSide - 32) / 2), (y * 32) - ((squareSide - 32) / 2), squareSide, squareSide, null);
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
+    private void movePlayer() {
+        if (!isWall(direction)) {
+            switch (direction) {
+                case Constants.left:
+                    xPixel -= velocity;
+                    break;
+                case Constants.up:
+                    yPixel -= velocity;
+                    break;
+                case Constants.right:
+                    xPixel += velocity;
+                    break;
+                case Constants.down:
+                    yPixel += velocity;
+                    break;
+            }
+        }
+        xSprite = xPixel / 32;
+        ySprite = yPixel / 32;
+        indexPosition = (ySprite * Constants.boardAncho) + xSprite;
     }
 
+    private void changeDirection() {
+        if (ControlManager.KEYBOARD.isLeft()) {
+            predirection = Constants.left;
+        } else {
+            if (ControlManager.KEYBOARD.isUp()) {
+                predirection = Constants.up;
+            } else {
+                if (ControlManager.KEYBOARD.isRight()) {
+                    predirection = Constants.right;
+                } else {
+                    if (ControlManager.KEYBOARD.isDown()) {
+                        predirection = Constants.down;
+                    }
+                }
+            }
+        }
+        if (xPixel % 32 == 0 && yPixel % 32 == 0) {
+            if (!isWall(predirection)) {
+                direction = predirection;
+            }
+        }
+    }
+
+    private boolean isWall(int direction) {
+        switch (direction) {
+            case Constants.left:
+                if (BoardMatrix.classicBoardSprites[indexPosition - 1] != 6) {
+                    if (xPixel == (xSprite) * 32) {
+                        return true;
+                    }
+                }
+                break;
+            case Constants.up:
+                if (BoardMatrix.classicBoardSprites[indexPosition - Constants.boardAncho] != 6) {
+                    if (yPixel == (ySprite) * 32) {
+                        return true;
+                    }
+                }
+                break;
+            case Constants.right:
+                if (BoardMatrix.classicBoardSprites[indexPosition + 1] != 6) {
+                    return true;
+                }
+                break;
+            case Constants.down:
+                if (BoardMatrix.classicBoardSprites[indexPosition + Constants.boardAncho] != 6) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
 }
