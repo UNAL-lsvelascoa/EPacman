@@ -77,7 +77,7 @@ public class EPacman {
     }
 
     public static void main(String[] args) {
-        EPacman juego = new EPacman("E-Pacman", 496, 448);
+        EPacman juego = new EPacman("E-Pacman", 32*28, 32*31);
         juego.iniciarJuego();
         juego.iniciarBuclePrincipal();
     }

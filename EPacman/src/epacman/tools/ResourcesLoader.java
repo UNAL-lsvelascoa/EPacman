@@ -16,7 +16,7 @@ public class ResourcesLoader {
     private BufferedImage bfImage = null;
     private GraphicsConfiguration graphicsConfig;
     
-    public BufferedImage cargarImagenCompatible(final String ruta, final int transparencia){
+    public BufferedImage loadImage(final String ruta, final int transparencia){
         try {
             image = ImageIO.read(getClass().getResource(ruta));
         } catch (IOException ex) {
