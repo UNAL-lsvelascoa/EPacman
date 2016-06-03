@@ -87,6 +87,15 @@ public class Player implements Character {
                     break;
             }
         }
+        if (outBoard()) {
+            if (xPixel < 0 && direction == Constants.left) {
+                xPixel = 32 * Constants.boardAncho;
+            } else {
+                if (xPixel > 32 * Constants.boardAncho && direction == Constants.right) {
+                    xPixel = 0;
+                }
+            }
+        }
         xSprite = xPixel / 32;
         ySprite = yPixel / 32;
         indexPosition = (ySprite * Constants.boardAncho) + xSprite;
@@ -116,6 +125,9 @@ public class Player implements Character {
     }
 
     private boolean isWall(int direction) {
+        if (outBoard()) {
+            return false;
+        }
         switch (direction) {
             case Constants.left:
                 if (BoardMatrix.classicBoardSprites[indexPosition - 1] != 6) {
@@ -143,5 +155,12 @@ public class Player implements Character {
                 break;
         }
         return false;
+    }
+
+    private boolean outBoard() {
+        return ySprite % Constants.boardAlto == 0
+                || ySprite % Constants.boardAlto == Constants.boardAlto - 1
+                || xSprite % Constants.boardAncho == 0
+                || xSprite % Constants.boardAncho == Constants.boardAncho - 1;
     }
 }
