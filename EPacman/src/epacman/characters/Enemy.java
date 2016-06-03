@@ -66,7 +66,7 @@ public class Enemy implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite).getImagen(), (xSprite * 32) - ((squareSide - 32) / 2), (ySprite * 32) - ((squareSide - 32) / 2), squareSide, squareSide, null);
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
     }
 
     private void movePlayer() {
@@ -100,7 +100,7 @@ public class Enemy implements Character {
 
     private void changeDirection() {
         Random rand = new Random();
-        int randomNum = rand.nextInt((4 - 1) + 1) + 1;
+        int randomNum = rand.nextInt((3 - 0) + 1);
         predirection = randomNum;
         if (xPixel % 32 == 0 && yPixel % 32 == 0) {
             if (!isWall(predirection)) {

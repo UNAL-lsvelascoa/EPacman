@@ -7,15 +7,17 @@ import java.awt.Graphics;
 public class MapManager implements StateGame{
 
     private final Board board = new Board();
+    private final FoodManager foodManager = new FoodManager();
     
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        foodManager.update();
     }
 
     @Override
     public void paint(Graphics g) {
         board.paint(g);
+        foodManager.paint(g);
     }
     
 }
