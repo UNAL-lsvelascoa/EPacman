@@ -49,10 +49,8 @@ public class Player implements Character {
         if (counterAnimation == animationDuration) {
             if (currentIndexSprite == quantitySprites - 1) {
                 animateOrder = false;
-            } else {
-                if (currentIndexSprite == 0) {
-                    animateOrder = true;
-                }
+            } else if (currentIndexSprite == 0) {
+                animateOrder = true;
             }
             if (animateOrder) {
                 currentIndexSprite++;
@@ -90,10 +88,8 @@ public class Player implements Character {
         if (outBoard()) {
             if (xPixel < 0 && direction == Constants.left) {
                 xPixel = 32 * Constants.boardAncho;
-            } else {
-                if (xPixel > 32 * Constants.boardAncho && direction == Constants.right) {
-                    xPixel = 0;
-                }
+            } else if (xPixel > 32 * Constants.boardAncho && direction == Constants.right) {
+                xPixel = 0;
             }
         }
         xSprite = xPixel / 32;
@@ -104,18 +100,12 @@ public class Player implements Character {
     private void changeDirection() {
         if (ControlManager.KEYBOARD.isLeft()) {
             predirection = Constants.left;
-        } else {
-            if (ControlManager.KEYBOARD.isUp()) {
-                predirection = Constants.up;
-            } else {
-                if (ControlManager.KEYBOARD.isRight()) {
-                    predirection = Constants.right;
-                } else {
-                    if (ControlManager.KEYBOARD.isDown()) {
-                        predirection = Constants.down;
-                    }
-                }
-            }
+        } else if (ControlManager.KEYBOARD.isUp()) {
+            predirection = Constants.up;
+        } else if (ControlManager.KEYBOARD.isRight()) {
+            predirection = Constants.right;
+        } else if (ControlManager.KEYBOARD.isDown()) {
+            predirection = Constants.down;
         }
         if (xPixel % 32 == 0 && yPixel % 32 == 0) {
             if (!isWall(predirection)) {
