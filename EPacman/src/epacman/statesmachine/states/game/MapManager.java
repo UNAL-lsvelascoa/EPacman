@@ -1,5 +1,6 @@
 package epacman.statesmachine.states.game;
 
+import epacman.control.ControlManager;
 import epacman.maps.Board;
 import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
@@ -12,6 +13,9 @@ public class MapManager implements StateGame{
     @Override
     public void update() {
         foodManager.update();
+        if(ControlManager.KEYBOARD.isExit()){
+            System.exit(0);
+        }
     }
 
     @Override

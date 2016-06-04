@@ -3,8 +3,6 @@ package epacman;
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
 import epacman.statesmachine.StatesManager;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 
 /**
  *
@@ -20,16 +18,13 @@ public class EPacman {
     private final String title;
     private static int aps = 0, fps = 0;
 
-    private MyCanvas superficieD;
+    private MyCanvas surface;
     private Window window;
-    private StatesManager gestorE;
+    private StatesManager stateManager;
 
     private EPacman(final String title) {
         this.title = title;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Variables.screenWidth = screenSize.getWidth();
-        Variables.screenHeight = screenSize.getHeight();
-        Variables.spriteRenderHeight = (int) (Variables.screenHeight / Constants.BOARD_HEIGHT);
+        Variables.spriteRenderHeight = (int) (Constants.SCREEN_HEIGHT / Constants.BOARD_HEIGHT);
         Variables.spriteRenderWidth = Variables.spriteRenderHeight;
         Variables.boardHeight = Constants.BOARD_HEIGHT * Variables.spriteRenderHeight;
         Variables.boardWidth = Constants.BOARD_WIDTH * Variables.spriteRenderWidth;
@@ -37,9 +32,9 @@ public class EPacman {
 
     private void iniciarJuego() {
         running = true;
-        superficieD = new MyCanvas();
-        window = new Window(title, superficieD);
-        gestorE = new StatesManager();
+        surface = new MyCanvas();
+        window = new Window(title, surface);
+        stateManager = new StatesManager();
     }
 
     private void iniciarBuclePrincipal() {
@@ -70,12 +65,12 @@ public class EPacman {
     }
 
     private void actualizar() {
-        gestorE.update();
+        stateManager.update();
         aps++;
     }
 
     private void dibujar() {
-        superficieD.paint(gestorE);
+        surface.paint(stateManager);
         fps++;
     }
 

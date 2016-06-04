@@ -1,7 +1,7 @@
 package epacman.statesmachine;
 
-import java.awt.Graphics;
 import epacman.statesmachine.states.game.GameManager;
+import java.awt.Graphics;
 
 public class StatesManager {
 

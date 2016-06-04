@@ -16,8 +16,8 @@ public class MyCanvas extends Canvas {
     private final int height;
 
     public MyCanvas() {
-        this.width = (int) Variables.boardWidth;
-        this.height = (int) Variables.boardHeight;
+        this.width = Variables.boardWidth;
+        this.height = Variables.boardHeight;
 
         initMyCanvas();
     }
@@ -34,10 +34,10 @@ public class MyCanvas extends Canvas {
         requestFocus();
     }
 
-    public void paint(StatesManager gestorE) {
+    public void paint(StatesManager statesManager) {
         BufferStrategy bufferS = getBufferStrategy();
         if (bufferS == null) {
-            createBufferStrategy(3);
+            createBufferStrategy(2);
             return;
         }
 
@@ -46,7 +46,7 @@ public class MyCanvas extends Canvas {
 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
-        gestorE.paint(g);
+        statesManager.paint(g);
 
         /*
          * Esto es para pintar solamente cuando el monitor se actualice

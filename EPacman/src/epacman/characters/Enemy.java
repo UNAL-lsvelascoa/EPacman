@@ -5,7 +5,6 @@ import epacman.Constants;
 import epacman.Variables;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
-import static epacman.characters.Character.squareSide;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
@@ -66,7 +65,7 @@ public class Enemy implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
     private void movePlayer() {
