@@ -1,7 +1,7 @@
 package epacman.characters;
 
-import epacman.BoardMatrix;
 import epacman.Constants;
+import epacman.Variables;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
@@ -12,11 +12,11 @@ import java.awt.Transparency;
  */
 public class Food implements Character {
 
-    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", 32, 32, Transparency.TRANSLUCENT);
+    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
     private int xPixel;
     private int yPixel;
     private int counterAnimation = 0;
-    private int currentIndexSprite = 4;
+    private int currentIndexSprite = 1;
     private boolean animateOrder = false;
 
     public Food() {
@@ -31,9 +31,9 @@ public class Food implements Character {
     @Override
     public void update() {
         if (counterAnimation == animationDuration) {
-            if (currentIndexSprite == 4 + quantitySprites - 1) {
+            if (currentIndexSprite == 1 + quantitySprites - 1) {
                 animateOrder = false;
-            } else if (currentIndexSprite == 4) {
+            } else if (currentIndexSprite == 1) {
                 animateOrder = true;
             }
             if (animateOrder) {
@@ -41,7 +41,7 @@ public class Food implements Character {
             } else {
                 currentIndexSprite--;
             }
-            counterAnimation = 4;
+            counterAnimation = 1;
         } else {
             counterAnimation++;
         }
@@ -49,7 +49,7 @@ public class Food implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(classicBoard.getSprite(1).getImagen(), xPixel, yPixel, null);
+        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
 
     }
 

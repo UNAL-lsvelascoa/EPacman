@@ -3,6 +3,8 @@ package epacman;
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
 import epacman.statesmachine.StatesManager;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  *
@@ -15,24 +17,28 @@ public class EPacman {
     private static final double NANOS_POR_APS = NANOS_POR_SEG / APS_OBJETIVO;
 
     private boolean running = false;
-    private final String titulo;
-    private String stringAPS = "APS", stringFPS = "FPS";
-    private static int ancho, alto, aps = 0, fps = 0;
+    private final String title;
+    private static int aps = 0, fps = 0;
 
     private MyCanvas superficieD;
-    private Window ventana;
+    private Window window;
     private StatesManager gestorE;
 
-    private EPacman(final String titulo, final int ancho, final int alto) {
-        this.titulo = titulo;
-        EPacman.ancho = ancho;
-        EPacman.alto = alto;
+    private EPacman(final String title) {
+        this.title = title;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Variables.screenWidth = screenSize.getWidth();
+        Variables.screenHeight = screenSize.getHeight();
+        Variables.spriteRenderHeight = (int) (Variables.screenHeight / Constants.BOARD_HEIGHT);
+        Variables.spriteRenderWidth = Variables.spriteRenderHeight;
+        Variables.boardHeight = Constants.BOARD_HEIGHT * Variables.spriteRenderHeight;
+        Variables.boardWidth = Constants.BOARD_WIDTH * Variables.spriteRenderWidth;
     }
 
     private void iniciarJuego() {
         running = true;
-        superficieD = new MyCanvas(ancho, alto);
-        ventana = new Window(titulo, superficieD);
+        superficieD = new MyCanvas();
+        window = new Window(title, superficieD);
         gestorE = new StatesManager();
     }
 
@@ -55,12 +61,10 @@ public class EPacman {
             dibujar();
 
             if (System.nanoTime() - referenciaContador > NANOS_POR_SEG) {
-                stringAPS = "APS: " + aps;
-                stringFPS = "FPS: " + fps;
-                //System.out.println(stringAPS + " " + stringFPS);
+                System.out.println("APS: " + aps + " " + "FPS: " + fps);
                 aps = 0;
                 fps = 0;
-                //referenciaContador = System.nanoTime();
+                referenciaContador = System.nanoTime();
             }
         }
     }
@@ -76,7 +80,7 @@ public class EPacman {
     }
 
     public static void main(String[] args) {
-        EPacman juego = new EPacman("E-Pacman", 32*28, 32*31);
+        EPacman juego = new EPacman("E-Pacman");
         juego.iniciarJuego();
         juego.iniciarBuclePrincipal();
     }

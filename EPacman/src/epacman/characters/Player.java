@@ -2,9 +2,9 @@ package epacman.characters;
 
 import epacman.BoardMatrix;
 import epacman.Constants;
+import epacman.Variables;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
-import static epacman.characters.Character.squareSide;
 import epacman.control.ControlManager;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
@@ -34,12 +34,12 @@ public class Player implements Character {
     }
 
     private void initPlayer(int xSprite, int ySprite, String uriSpriteSheet) {
-        this.xPixel = xSprite * 32;
-        this.yPixel = ySprite * 32;
+        this.xPixel = xSprite * Variables.spriteRenderWidth;
+        this.yPixel = ySprite * Variables.spriteRenderHeight;
         this.xSprite = xSprite;
         this.ySprite = ySprite;
         this.indexPosition = xSprite * ySprite;
-        this.spritesSheet = new SpritesSheet(uriSpriteSheet, 32, 32, Transparency.TRANSLUCENT);
+        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
     }
 
     @Override
@@ -47,23 +47,15 @@ public class Player implements Character {
         changeDirection();
         movePlayer();
         switch (direction) {
-            case Constants.left:
-                if (xPixel % 32 >= 0 && xPixel % 32 < 4) {
+            case Constants.LEFT:
+            case Constants.RIGHT:
+                if (xPixel % Variables.spriteRenderWidth >= 0 && xPixel % Variables.spriteRenderWidth < 4) {
                     eatFood();
                 }
                 break;
-            case Constants.up:
-                if (yPixel % 32 >= 0 && yPixel % 32 < 4) {
-                    eatFood();
-                }
-                break;
-            case Constants.right:
-                if (xPixel % 32 >= 0 && xPixel % 32 < 4) {
-                    eatFood();
-                }
-                break;
-            case Constants.down:
-                if (yPixel % 32 >= 0 && yPixel % 32 < 4) {
+            case Constants.UP:
+            case Constants.DOWN:
+                if (yPixel % Variables.spriteRenderHeight >= 0 && yPixel % Variables.spriteRenderHeight < 4) {
                     eatFood();
                 }
                 break;
@@ -87,49 +79,51 @@ public class Player implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(),
+                //xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
+                xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
     private void movePlayer() {
         if (!isWall(direction)) {
             switch (direction) {
-                case Constants.left:
+                case Constants.LEFT:
                     xPixel -= velocity;
                     break;
-                case Constants.up:
+                case Constants.UP:
                     yPixel -= velocity;
                     break;
-                case Constants.right:
+                case Constants.RIGHT:
                     xPixel += velocity;
                     break;
-                case Constants.down:
+                case Constants.DOWN:
                     yPixel += velocity;
                     break;
             }
         }
         if (outBoard()) {
-            if (xPixel < 0 && direction == Constants.left) {
-                xPixel = 32 * Constants.boardAncho;
-            } else if (xPixel > 32 * Constants.boardAncho && direction == Constants.right) {
+            if (xPixel < 0 && direction == Constants.LEFT) {
+                xPixel = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
+            } else if (xPixel > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
                 xPixel = 0;
             }
         }
-        xSprite = xPixel / 32;
-        ySprite = yPixel / 32;
-        indexPosition = (ySprite * Constants.boardAncho) + xSprite;
+        xSprite = xPixel / Variables.spriteRenderWidth;
+        ySprite = yPixel / Variables.spriteRenderHeight;
+        indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
     }
 
     private void changeDirection() {
         if (ControlManager.KEYBOARD.isLeft()) {
-            predirection = Constants.left;
+            predirection = Constants.LEFT;
         } else if (ControlManager.KEYBOARD.isUp()) {
-            predirection = Constants.up;
+            predirection = Constants.UP;
         } else if (ControlManager.KEYBOARD.isRight()) {
-            predirection = Constants.right;
+            predirection = Constants.RIGHT;
         } else if (ControlManager.KEYBOARD.isDown()) {
-            predirection = Constants.down;
+            predirection = Constants.DOWN;
         }
-        if (xPixel % 32 == 0 && yPixel % 32 == 0) {
+        if (xPixel % Variables.spriteRenderWidth == 0 && yPixel % Variables.spriteRenderHeight == 0) {
             if (!isWall(predirection)) {
                 direction = predirection;
             }
@@ -141,27 +135,27 @@ public class Player implements Character {
             return false;
         }
         switch (direction) {
-            case Constants.left:
-                if (BoardMatrix.classicBoardSprites[indexPosition - 1] != 6) {
-                    if (xPixel == (xSprite) * 32) {
+            case Constants.LEFT:
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0) {
+                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
-            case Constants.up:
-                if (BoardMatrix.classicBoardSprites[indexPosition - Constants.boardAncho] != 6) {
-                    if (yPixel == (ySprite) * 32) {
+            case Constants.UP:
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0) {
+                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
                 break;
-            case Constants.right:
-                if (BoardMatrix.classicBoardSprites[indexPosition + 1] != 6) {
+            case Constants.RIGHT:
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
                     return true;
                 }
                 break;
-            case Constants.down:
-                if (BoardMatrix.classicBoardSprites[indexPosition + Constants.boardAncho] != 6) {
+            case Constants.DOWN:
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
                     return true;
                 }
                 break;
@@ -170,13 +164,13 @@ public class Player implements Character {
     }
 
     private boolean outBoard() {
-        return ySprite % Constants.boardAlto == 0
-                || ySprite % Constants.boardAlto == Constants.boardAlto - 1
-                || xSprite % Constants.boardAncho == 0
-                || xSprite % Constants.boardAncho == Constants.boardAncho - 1;
+        return ySprite % Constants.BOARD_HEIGHT == 0
+                || ySprite % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
+                || xSprite % Constants.BOARD_WIDTH == 0
+                || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
     }
 
     private void eatFood() {
-        BoardMatrix.classicBoardFood[(ySprite * Constants.boardAncho) + xSprite] = 0;
+        BoardMatrix.CLASSIC_BOARD_FOOD[(ySprite * Constants.BOARD_WIDTH) + xSprite] = 3;
     }
 }

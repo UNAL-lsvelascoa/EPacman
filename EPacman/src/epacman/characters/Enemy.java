@@ -2,10 +2,10 @@ package epacman.characters;
 
 import epacman.BoardMatrix;
 import epacman.Constants;
+import epacman.Variables;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
 import static epacman.characters.Character.squareSide;
-import epacman.control.ControlManager;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
@@ -23,8 +23,8 @@ public class Enemy implements Character {
     private int xPixel;
     private int yPixel;
     private final double velocity = 2.0;
-    private int direction = Constants.left;
-    private int predirection = Constants.left;
+    private int direction = Constants.LEFT;
+    private int predirection = Constants.LEFT;
     private int currentIndexSprite = 0;
     private int counterAnimation = 0;
     private int indexPosition = 0;
@@ -37,10 +37,10 @@ public class Enemy implements Character {
     private void initEnemy(int xSprite, int ySprite, String uriSpriteSheet) {
         this.xSprite = xSprite;
         this.ySprite = ySprite;
-        this.xPixel = xSprite * 32;
-        this.yPixel = ySprite * 32;
+        this.xPixel = xSprite * Variables.spriteRenderWidth;
+        this.yPixel = ySprite * Variables.spriteRenderHeight;
         this.indexPosition = xSprite * ySprite;
-        this.spritesSheet = new SpritesSheet(uriSpriteSheet, 32, 32, Transparency.TRANSLUCENT);
+        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
     }
 
     @Override
@@ -72,37 +72,37 @@ public class Enemy implements Character {
     private void movePlayer() {
         if (!isWall(direction)) {
             switch (direction) {
-                case Constants.left:
+                case Constants.LEFT:
                     xPixel -= velocity;
                     break;
-                case Constants.up:
+                case Constants.UP:
                     yPixel -= velocity;
                     break;
-                case Constants.right:
+                case Constants.RIGHT:
                     xPixel += velocity;
                     break;
-                case Constants.down:
+                case Constants.DOWN:
                     yPixel += velocity;
                     break;
             }
         }
         if (outBoard()) {
-            if (xPixel < 0 && direction == Constants.left) {
-                xPixel = 32 * Constants.boardAncho;
-            } else if (xPixel > 32 * Constants.boardAncho && direction == Constants.right) {
+            if (xPixel < 0 && direction == Constants.LEFT) {
+                xPixel = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
+            } else if (xPixel > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
                 xPixel = 0;
             }
         }
-        xSprite = xPixel / 32;
-        ySprite = yPixel / 32;
-        indexPosition = (ySprite * Constants.boardAncho) + xSprite;
+        xSprite = xPixel / Variables.spriteRenderWidth;
+        ySprite = yPixel / Variables.spriteRenderHeight;
+        indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
     }
 
     private void changeDirection() {
         Random rand = new Random();
         int randomNum = rand.nextInt((3 - 0) + 1);
         predirection = randomNum;
-        if (xPixel % 32 == 0 && yPixel % 32 == 0) {
+        if (xPixel % Variables.spriteRenderWidth == 0 && yPixel % Variables.spriteRenderHeight == 0) {
             if (!isWall(predirection)) {
                 direction = predirection;
             }
@@ -114,27 +114,27 @@ public class Enemy implements Character {
             return false;
         }
         switch (direction) {
-            case Constants.left:
-                if (BoardMatrix.classicBoardSprites[indexPosition - 1] != 6) {
-                    if (xPixel == (xSprite) * 32) {
+            case Constants.LEFT:
+                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - 1] != 6) {
+                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
-            case Constants.up:
-                if (BoardMatrix.classicBoardSprites[indexPosition - Constants.boardAncho] != 6) {
-                    if (yPixel == (ySprite) * 32) {
+            case Constants.UP:
+                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - Constants.BOARD_WIDTH] != 6) {
+                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
                 break;
-            case Constants.right:
-                if (BoardMatrix.classicBoardSprites[indexPosition + 1] != 6) {
+            case Constants.RIGHT:
+                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + 1] != 6) {
                     return true;
                 }
                 break;
-            case Constants.down:
-                if (BoardMatrix.classicBoardSprites[indexPosition + Constants.boardAncho] != 6) {
+            case Constants.DOWN:
+                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + Constants.BOARD_WIDTH] != 6) {
                     return true;
                 }
                 break;
@@ -143,10 +143,10 @@ public class Enemy implements Character {
     }
 
     private boolean outBoard() {
-        return ySprite % Constants.boardAlto == 0
-                || ySprite % Constants.boardAlto == Constants.boardAlto - 1
-                || xSprite % Constants.boardAncho == 0
-                || xSprite % Constants.boardAncho == Constants.boardAncho - 1;
+        return ySprite % Constants.BOARD_HEIGHT == 0
+                || ySprite % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
+                || xSprite % Constants.BOARD_WIDTH == 0
+                || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
     }
 
 }

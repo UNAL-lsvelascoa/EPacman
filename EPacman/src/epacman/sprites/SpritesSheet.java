@@ -5,36 +5,39 @@ import java.awt.image.BufferedImage;
 
 public class SpritesSheet {
 
-    final private int anchoHojaEnPixeles, altoHojaEnPixeles,
-            anchoHojaEnSprites, altoHojaEnSprites,
-            anchoSprites, altoSprites;
+    private final int sheetPixelWidth;
+    private final int altoHojaEnPixeles;
+    private final int sheetSpriteWidth;
+    private final int altoHojaEnSprites;
+    private final int spriteWidth;
+    private final int spriteHeight;
 
     final private Sprite[] sprites;
 
     private static final ResourcesLoader loader = new ResourcesLoader();
 
-    public SpritesSheet(final String ruta, final int anchoSprites, final int altoSprites, final int transparente) {
+    public SpritesSheet(final String uri, final int spriteWidth, final int spriteHeight, final int transparency) {
         BufferedImage image;
-        image = loader.loadImage(ruta, transparente);
+        image = loader.loadImage(uri, transparency);
 
-        anchoHojaEnPixeles = image.getWidth();
+        sheetPixelWidth = image.getWidth();
         altoHojaEnPixeles = image.getHeight();
-        anchoHojaEnSprites = anchoHojaEnPixeles / anchoSprites;
-        altoHojaEnSprites = altoHojaEnPixeles / altoSprites;
-        this.anchoSprites = anchoSprites;
-        this.altoSprites = altoSprites;
+        sheetSpriteWidth = sheetPixelWidth / spriteWidth;
+        altoHojaEnSprites = altoHojaEnPixeles / spriteHeight;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
 
-        sprites = new Sprite[anchoHojaEnSprites * altoHojaEnSprites];
+        sprites = new Sprite[sheetSpriteWidth * altoHojaEnSprites];
         rellenarSprites(image);
     }
 
     private void rellenarSprites(final BufferedImage imagen) {
 
         for (int i = 0; i < altoHojaEnSprites; i++) {
-            for (int j = 0; j < anchoHojaEnSprites; j++) {
-                final int posicionX = j * anchoSprites;
-                final int posicionY = i * altoSprites;
-                sprites[j + i * anchoHojaEnSprites] = new Sprite(imagen.getSubimage(posicionX, posicionY, anchoSprites, altoSprites));
+            for (int j = 0; j < sheetSpriteWidth; j++) {
+                final int posicionX = j * spriteWidth;
+                final int posicionY = i * spriteHeight;
+                sprites[j + i * sheetSpriteWidth] = new Sprite(imagen.getSubimage(posicionX, posicionY, spriteWidth, spriteHeight));
             }
         }
     }
@@ -44,7 +47,7 @@ public class SpritesSheet {
     }
 
     public Sprite getSprite(final int x, final int y) {
-        return sprites[x + y * anchoHojaEnSprites];
+        return sprites[x + y * sheetSpriteWidth];
     }
 
 }

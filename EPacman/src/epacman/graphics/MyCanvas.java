@@ -1,5 +1,6 @@
 package epacman.graphics;
 
+import epacman.Variables;
 import epacman.control.ControlManager;
 import epacman.statesmachine.StatesManager;
 import java.awt.Canvas;
@@ -11,22 +12,23 @@ import java.awt.image.BufferStrategy;
 
 public class MyCanvas extends Canvas {
 
-    private final int ancho, alto;
+    private final int width;
+    private final int height;
 
-    public MyCanvas(final int ancho, final int alto) {
-        this.ancho = ancho;
-        this.alto = alto;
+    public MyCanvas() {
+        this.width = (int) Variables.boardWidth;
+        this.height = (int) Variables.boardHeight;
 
         initMyCanvas();
     }
-    
-    private void initMyCanvas(){
+
+    private void initMyCanvas() {
         /*
          * Hace que java no pueda forzar el repintado del canvas
          * Solo nosotros podremos repintar el canvas
          */
         setIgnoreRepaint(true);
-        setPreferredSize(new Dimension(ancho, alto));
+        setPreferredSize(new Dimension(width, height));
         addKeyListener(ControlManager.KEYBOARD);
         setFocusable(true);
         requestFocus();
@@ -43,7 +45,7 @@ public class MyCanvas extends Canvas {
         Graphics g = bufferS.getDrawGraphics();
 
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, ancho, alto);
+        g.fillRect(0, 0, width, height);
         gestorE.paint(g);
 
         /*
@@ -54,13 +56,4 @@ public class MyCanvas extends Canvas {
         g.dispose();
         bufferS.show();
     }
-
-    public int getAlto() {
-        return alto;
-    }
-
-    public int getAncho() {
-        return ancho;
-    }
-
 }
