@@ -18,7 +18,7 @@ import java.awt.Transparency;
 public class Player implements Character {
 
     private SpritesSheet spritesSheet;
-    private Sound sound;
+    private Sound eatFoodSound;
     private int xPixel;
     private int yPixel;
     private int xSprite;
@@ -42,7 +42,7 @@ public class Player implements Character {
         this.ySprite = ySprite;
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.sound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
+        this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
     }
 
     @Override
@@ -175,8 +175,8 @@ public class Player implements Character {
 
     private void eatFood() {
         if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
-            BoardMatrix.CLASSIC_BOARD_FOOD[(ySprite * Constants.BOARD_WIDTH) + xSprite] = 3;
-            sound.play();
+            BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+            eatFoodSound.play();
         }
     }
 }
