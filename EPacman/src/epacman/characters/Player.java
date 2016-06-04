@@ -46,6 +46,28 @@ public class Player implements Character {
     public void update() {
         changeDirection();
         movePlayer();
+        switch (direction) {
+            case Constants.left:
+                if (xPixel % 32 >= 0 && xPixel % 32 < 4) {
+                    eatFood();
+                }
+                break;
+            case Constants.up:
+                if (yPixel % 32 >= 0 && yPixel % 32 < 4) {
+                    eatFood();
+                }
+                break;
+            case Constants.right:
+                if (xPixel % 32 >= 0 && xPixel % 32 < 4) {
+                    eatFood();
+                }
+                break;
+            case Constants.down:
+                if (yPixel % 32 >= 0 && yPixel % 32 < 4) {
+                    eatFood();
+                }
+                break;
+        }
         if (counterAnimation == animationDuration) {
             if (currentIndexSprite == quantitySprites - 1) {
                 animateOrder = false;
@@ -152,5 +174,9 @@ public class Player implements Character {
                 || ySprite % Constants.boardAlto == Constants.boardAlto - 1
                 || xSprite % Constants.boardAncho == 0
                 || xSprite % Constants.boardAncho == Constants.boardAncho - 1;
+    }
+
+    private void eatFood() {
+        BoardMatrix.classicBoardFood[(ySprite * Constants.boardAncho) + xSprite] = 0;
     }
 }
