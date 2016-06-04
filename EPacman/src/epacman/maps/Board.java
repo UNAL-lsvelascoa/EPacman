@@ -1,8 +1,8 @@
 package epacman.maps;
 
-import epacman.BoardMatrix;
-import epacman.Constants;
-import epacman.Variables;
+import epacman.common.BoardMatrix;
+import epacman.common.Constants;
+import epacman.common.Variables;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;

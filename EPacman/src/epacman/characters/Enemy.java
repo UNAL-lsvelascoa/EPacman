@@ -1,8 +1,8 @@
 package epacman.characters;
 
-import epacman.BoardMatrix;
-import epacman.Constants;
-import epacman.Variables;
+import epacman.common.BoardMatrix;
+import epacman.common.Constants;
+import epacman.common.Variables;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
 import epacman.sprites.SpritesSheet;

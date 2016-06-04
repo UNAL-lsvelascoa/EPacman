@@ -1,6 +1,6 @@
 package epacman.sprites;
 
-import epacman.tools.ResourcesLoader;
+import epacman.common.ResourcesLoader;
 import java.awt.image.BufferedImage;
 
 public class SpritesSheet {

@@ -1,6 +1,6 @@
 package epacman.graphics;
 
-import epacman.Variables;
+import epacman.common.Variables;
 import epacman.control.ControlManager;
 import epacman.statesmachine.StatesManager;
 import java.awt.Canvas;

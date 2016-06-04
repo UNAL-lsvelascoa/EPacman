@@ -1,6 +1,6 @@
 package epacman.graphics;
 
-import epacman.Tools;
+import epacman.common.Tools;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;

@@ -1,11 +1,12 @@
 package epacman.characters;
 
-import epacman.BoardMatrix;
-import epacman.Constants;
-import epacman.Variables;
 import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
+import epacman.common.BoardMatrix;
+import epacman.common.Constants;
+import epacman.common.Variables;
 import epacman.control.ControlManager;
+import epacman.sounds.Sound;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
@@ -17,6 +18,7 @@ import java.awt.Transparency;
 public class Player implements Character {
 
     private SpritesSheet spritesSheet;
+    private Sound sound;
     private int xPixel;
     private int yPixel;
     private int xSprite;
@@ -40,6 +42,7 @@ public class Player implements Character {
         this.ySprite = ySprite;
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.sound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
     }
 
     @Override
@@ -171,6 +174,9 @@ public class Player implements Character {
     }
 
     private void eatFood() {
-        BoardMatrix.CLASSIC_BOARD_FOOD[(ySprite * Constants.BOARD_WIDTH) + xSprite] = 3;
+        if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
+            BoardMatrix.CLASSIC_BOARD_FOOD[(ySprite * Constants.BOARD_WIDTH) + xSprite] = 3;
+            sound.play();
+        }
     }
 }

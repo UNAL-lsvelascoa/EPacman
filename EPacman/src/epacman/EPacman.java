@@ -1,5 +1,7 @@
 package epacman;
 
+import epacman.common.Constants;
+import epacman.common.Variables;
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
 import epacman.statesmachine.StatesManager;

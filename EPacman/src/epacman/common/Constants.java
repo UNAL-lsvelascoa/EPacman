@@ -1,4 +1,4 @@
-package epacman;
+package epacman.common;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -20,5 +20,7 @@ public interface Constants {
     Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     int SCREEN_WIDTH = (int) SCREEN_SIZE.getWidth();
     int SCREEN_HEIGHT = (int) SCREEN_SIZE.getHeight();
+    
+    String URI_CLASSIC_SOUND_EAT_FOOD = "src/media/audio/ClassicEatFood.wav";
 
 }

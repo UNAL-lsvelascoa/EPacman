@@ -1,8 +1,8 @@
 package epacman.statesmachine.states.game;
 
-import epacman.BoardMatrix;
-import epacman.Constants;
-import epacman.Variables;
+import epacman.common.BoardMatrix;
+import epacman.common.Constants;
+import epacman.common.Variables;
 import epacman.characters.Food;
 import epacman.characters.SpecialFood;
 import epacman.statesmachine.StateGame;

@@ -1,7 +1,7 @@
 package epacman.characters;
 
-import epacman.BoardMatrix;
-import epacman.Constants;
+import epacman.common.BoardMatrix;
+import epacman.common.Constants;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;

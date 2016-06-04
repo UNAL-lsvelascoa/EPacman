@@ -1,4 +1,4 @@
-package epacman;
+package epacman.common;
 
 import javax.swing.JFrame;
 
