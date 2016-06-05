@@ -22,5 +22,7 @@ public interface Constants {
     int SCREEN_HEIGHT = (int) SCREEN_SIZE.getHeight();
     
     String URI_CLASSIC_SOUND_EAT_FOOD = "src/media/audio/ClassicEatFood.wav";
+    String URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD = "src/media/audio/ClassicEatSpecialFood.wav";
+    String URI_CLASSIC_SOUND_BACKGROUND_NORMAL = "src/media/audio/ClassicBackgroundNormal.wav";
 
 }

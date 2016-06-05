@@ -27,8 +27,8 @@ public class StatesManager {
     }
 
     //para cambiar a otros estados en el juego
-    public void cambiarEstado(final int nuevoEstado) {
-        currentState = states[nuevoEstado];
+    public void changeState(final int newState) {
+        currentState = states[newState];
     }
 
     public StateGame getEstadoActual() {

@@ -3,6 +3,7 @@ package epacman.maps;
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
 import epacman.common.Variables;
+import epacman.sounds.Sound;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;

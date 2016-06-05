@@ -19,6 +19,7 @@ public class Player implements Character {
 
     private SpritesSheet spritesSheet;
     private Sound eatFoodSound;
+    private Sound eatSpecialFoodSound;
     private int xPixel;
     private int yPixel;
     private int xSprite;
@@ -43,6 +44,7 @@ public class Player implements Character {
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
+        this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
     }
 
     @Override
@@ -177,6 +179,10 @@ public class Player implements Character {
         if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
             BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
             eatFoodSound.play();
+        }
+        if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 2) {
+            BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+            eatSpecialFoodSound.play();
         }
     }
 }

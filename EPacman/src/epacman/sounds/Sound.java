@@ -21,18 +21,27 @@ public class Sound implements LineListener {
 
     private static final ResourcesLoader loader = new ResourcesLoader();
     private Clip sound;
-    private String uri;
+    private final String uri;
+    private boolean inLoop = false;
 
     public Sound(final String uri) {
         this.uri = uri;
         initSound();
-        sound.addLineListener(this);
     }
 
     public void play() {
         initSound();
         sound.start();
     }
+
+    public void playInLoop() {
+        initSound();
+        inLoop = true;
+        sound.loop(Integer.MAX_VALUE);
+        sound.addLineListener(this);
+        sound.start();
+    }
+
     public void stop() {
         sound.stop();
     }
@@ -53,7 +62,11 @@ public class Sound implements LineListener {
     public void update(LineEvent event) {
         LineEvent.Type type = event.getType();
         if (type == LineEvent.Type.STOP) {
-            sound.close();
+            if (inLoop) {
+                playInLoop();
+            } else {
+                sound.close();
+            }
         }
     }
 }

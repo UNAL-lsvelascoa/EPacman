@@ -10,5 +10,6 @@ public class Variables {
     public static int spriteRenderHeight;
     public static int boardWidth;
     public static int boardHeight;
+    public static boolean playingBackground = false;
 
 }

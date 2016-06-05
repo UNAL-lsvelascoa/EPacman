@@ -1,6 +1,7 @@
 package epacman.graphics;
 
 import epacman.common.Tools;
+import epacman.common.Variables;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
@@ -18,12 +19,13 @@ public class Window extends JFrame implements ComponentListener{
 
     private void initWindow(final MyCanvas surface) {
         setTitle(title);
-        setUndecorated(true);
+        //setUndecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(null);
         setLayout(new BorderLayout());
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(400, 300));
+        setSize(Variables.boardWidth, Variables.boardHeight);
         add(surface);
         setLocationRelativeTo(null);
         setVisible(true);

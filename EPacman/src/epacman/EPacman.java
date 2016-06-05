@@ -21,7 +21,6 @@ public class EPacman {
     private static int aps = 0, fps = 0;
 
     private MyCanvas surface;
-    private Window window;
     private StatesManager stateManager;
 
     private EPacman(final String title) {
@@ -35,7 +34,7 @@ public class EPacman {
     private void iniciarJuego() {
         running = true;
         surface = new MyCanvas();
-        window = new Window(title, surface);
+        new Window(title, surface);
         stateManager = new StatesManager();
     }
 
