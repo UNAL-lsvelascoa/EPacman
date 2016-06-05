@@ -24,5 +24,11 @@ public interface Constants {
     String URI_CLASSIC_SOUND_EAT_FOOD = "src/media/audio/ClassicEatFood.wav";
     String URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD = "src/media/audio/ClassicEatSpecialFood.wav";
     String URI_CLASSIC_SOUND_BACKGROUND_NORMAL = "src/media/audio/ClassicBackgroundNormal.wav";
+    String URI_CLASSIC_SOUND_BACKGROUND_SPECIAL = "src/media/audio/ClassicBackgroundSpecial.wav";
+    String URI_CLASSIC_SOUND_BACKGROUND_TO_HOME = "src/media/audio/ClassicBackgroundToHome.wav";
+    
+    int TYPE_BACKGROUND_NORMAL = 1;
+    int TYPE_BACKGROUND_SPECIAL= 2;
+    int TYPE_BACKGROUND_TO_HOME = 3;
 
 }

@@ -1,5 +1,6 @@
 package epacman.statesmachine.states.game;
 
+import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.sounds.SoundManager;
 import epacman.statesmachine.StateGame;
@@ -22,7 +23,7 @@ public class GameManager implements StateGame {
         mapManager.paint(g);
         charactersManager.paint(g);
         if(!Variables.playingBackground){
-            soundManager.playBackground();
+            soundManager.playBackground(Variables.backgroundSoundType);
             Variables.playingBackground = true;
         }
     }

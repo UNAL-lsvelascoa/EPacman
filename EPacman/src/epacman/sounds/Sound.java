@@ -46,6 +46,11 @@ public class Sound implements LineListener {
         sound.stop();
     }
 
+    public void close() {
+        inLoop = false;
+        sound.stop();
+    }
+
     private void initSound() {
         try {
             AudioInputStream audioStream = loader.loadSound(uri);

@@ -11,5 +11,7 @@ public class Variables {
     public static int boardWidth;
     public static int boardHeight;
     public static boolean playingBackground = false;
+    public static boolean playingEating = false;
+    public static int backgroundSoundType = Constants.TYPE_BACKGROUND_NORMAL;
 
 }

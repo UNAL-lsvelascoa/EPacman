@@ -54,13 +54,13 @@ public class Player implements Character {
         switch (direction) {
             case Constants.LEFT:
             case Constants.RIGHT:
-                if (xPixel % Variables.spriteRenderWidth >= 0 && xPixel % Variables.spriteRenderWidth < 4) {
+                if (xPixel % Variables.spriteRenderWidth >= 0 && xPixel % Variables.spriteRenderWidth < velocity) {
                     eatFood();
                 }
                 break;
             case Constants.UP:
             case Constants.DOWN:
-                if (yPixel % Variables.spriteRenderHeight >= 0 && yPixel % Variables.spriteRenderHeight < 4) {
+                if (yPixel % Variables.spriteRenderHeight >= 0 && yPixel % Variables.spriteRenderHeight < velocity) {
                     eatFood();
                 }
                 break;
@@ -178,11 +178,21 @@ public class Player implements Character {
     private void eatFood() {
         if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
             BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-            eatFoodSound.play();
-        }
-        if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 2) {
-            BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-            eatSpecialFoodSound.play();
+            if (!Variables.playingEating) {
+                Variables.playingEating = true;
+                eatFoodSound.playInLoop();
+            }
+        } else {
+            eatFoodSound.close();
+            Variables.playingEating = false;
+            if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 2) {
+                BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+                eatSpecialFoodSound.play();
+                if (Variables.backgroundSoundType != Constants.TYPE_BACKGROUND_SPECIAL) {
+                    Variables.playingBackground = false;
+                    Variables.backgroundSoundType = Constants.TYPE_BACKGROUND_SPECIAL;
+                }
+            }
         }
     }
 }
