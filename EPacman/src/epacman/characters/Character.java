@@ -14,10 +14,8 @@ public class Character implements Entity{
 
     protected SpritesSheet spritesSheet;
     
-    protected int xPixel;
-    protected int yPixel;
-    protected int xSprite;
-    protected int ySprite;
+    protected Point pixel;
+    protected Point sprite;
     
     protected int indexPosition;
     protected double velocity = 1;

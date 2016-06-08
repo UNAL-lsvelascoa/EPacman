@@ -25,7 +25,7 @@ public class SpecialFood extends Food implements Entity {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, null);
+        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), pixel.x, pixel.y, null);
     }
 
 }

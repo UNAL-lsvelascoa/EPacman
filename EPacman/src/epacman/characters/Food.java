@@ -17,8 +17,7 @@ public class Food extends Character implements Entity {
     private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
 
     public Food(int xPixel, int yPixel) {
-        this.xPixel = xPixel;
-        this.yPixel = yPixel;
+        this.pixel = new Point(xPixel, yPixel);
         currentIndexSprite = 1;
         this.limitSize = 2;
         this.limit = new Rectangle(xPixel, yPixel, limitSize, limitSize);
@@ -47,7 +46,7 @@ public class Food extends Character implements Entity {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         g.drawRect(limit.x, limit.y, limit.width, limit.height);
         if (!FOODS.containsKey(limit)) {
             FOODS.put(new Rectangle(limit), true);
@@ -55,13 +54,13 @@ public class Food extends Character implements Entity {
     }
 
     public void setxPixel(int xPixel) {
-        this.xPixel = xPixel;
+        this.pixel.x = xPixel;
         this.limit.x = (xPixel + (Variables.spriteRenderWidth / 2) - (limitSize / 2));
         this.center.x = (xPixel + (Variables.spriteRenderWidth / 2));
     }
 
     public void setyPixel(int yPixel) {
-        this.yPixel = yPixel;
+        this.pixel.y = yPixel;
         this.limit.y = (yPixel + (Variables.spriteRenderHeight / 2) - (limitSize / 2));
         this.center.y = (yPixel + (Variables.spriteRenderHeight / 2));
     }

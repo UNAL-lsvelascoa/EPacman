@@ -39,17 +39,15 @@ public class Player extends Character implements Entity {
     }
 
     private void initPlayer(int xSprite, int ySprite, String uriSpriteSheet) {
-        this.xPixel = xSprite * Variables.spriteRenderWidth;
-        this.yPixel = ySprite * Variables.spriteRenderHeight;
-        this.xSprite = xSprite;
-        this.ySprite = ySprite;
+        this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
+        this.sprite = new Point(xSprite, ySprite);
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
         this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
         this.limitSize = Variables.spriteRenderWidth / 2;
-        this.center = new Point((xPixel + (Variables.spriteRenderWidth / 2)),
-                (yPixel + (Variables.spriteRenderHeight / 2)));
+        this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
+                (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
     }
 
@@ -63,7 +61,6 @@ public class Player extends Character implements Entity {
                     eat();
                     FOODS.replace(rect, false);
                 } else {
-                    eat();
                 }
                 break;
             }
@@ -90,44 +87,44 @@ public class Player extends Character implements Entity {
     ) {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
     private void movePlayer() {
         if (!isWall(direction)) {
             switch (direction) {
                 case Constants.LEFT:
-                    xPixel -= velocity;
+                    pixel.x -= velocity;
                     break;
                 case Constants.UP:
-                    yPixel -= velocity;
+                    pixel.y -= velocity;
                     break;
                 case Constants.RIGHT:
-                    xPixel += velocity;
+                    pixel.x += velocity;
                     break;
                 case Constants.DOWN:
-                    yPixel += velocity;
+                    pixel.y += velocity;
                     break;
             }
         }
         if (outBoard()) {
-            if (xPixel < 0 && direction == Constants.LEFT) {
-                xPixel = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
-            } else if (xPixel > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
-                xPixel = 0;
+            if (pixel.x < 0 && direction == Constants.LEFT) {
+                pixel.x = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
+            } else if (pixel.x > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
+                pixel.x = 0;
             }
         }
         changeLimits();
     }
 
     private void changeLimits() {
-        xSprite = center.x / Variables.spriteRenderWidth;
-        ySprite = center.y / Variables.spriteRenderHeight;
+        sprite.x = center.x / Variables.spriteRenderWidth;
+        sprite.y = center.y / Variables.spriteRenderHeight;
         limit.x = center.x - (limitSize / 2);
         limit.y = center.y - (limitSize / 2);
-        center.x = xPixel + (Variables.spriteRenderWidth / 2);
-        center.y = yPixel + (Variables.spriteRenderHeight / 2);
-        indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
+        center.x = pixel.x + (Variables.spriteRenderWidth / 2);
+        center.y = pixel.y + (Variables.spriteRenderHeight / 2);
+        indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
     }
 
     private void changeDirection() {
@@ -140,7 +137,7 @@ public class Player extends Character implements Entity {
         } else if (ControlManager.KEYBOARD.isDown()) {
             predirection = Constants.DOWN;
         }
-        if (xPixel % Variables.spriteRenderWidth == 0 && yPixel % Variables.spriteRenderHeight == 0) {
+        if (pixel.x % Variables.spriteRenderWidth == 0 && pixel.y % Variables.spriteRenderHeight == 0) {
             if (!isWall(predirection)) {
                 direction = predirection;
             }
@@ -154,28 +151,28 @@ public class Player extends Character implements Entity {
         switch (direction) {
             case Constants.LEFT:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0) {
-                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
+                    if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.UP:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0) {
-                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
+                    if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
                 break;
             case Constants.RIGHT:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
-                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
+                    if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.DOWN:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
-                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
+                    if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
@@ -185,10 +182,10 @@ public class Player extends Character implements Entity {
     }
 
     private boolean outBoard() {
-        return ySprite % Constants.BOARD_HEIGHT == 0
-                || ySprite % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
-                || xSprite % Constants.BOARD_WIDTH == 0
-                || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
+        return sprite.y % Constants.BOARD_HEIGHT == 0
+                || sprite.y % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
+                || sprite.x % Constants.BOARD_WIDTH == 0
+                || sprite.x % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
     }
 
     private void eat() {

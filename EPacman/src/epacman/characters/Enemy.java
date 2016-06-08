@@ -28,15 +28,13 @@ public class Enemy extends Character implements Entity {
     }
 
     private void initEnemy(int xSprite, int ySprite, String uriSpriteSheet) {
-        this.xSprite = xSprite;
-        this.ySprite = ySprite;
-        this.xPixel = xSprite * Variables.spriteRenderWidth;
-        this.yPixel = ySprite * Variables.spriteRenderHeight;
+        this.sprite = new Point(xSprite, ySprite);
+        this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.limitSize = Variables.spriteRenderWidth;
-        this.center = new Point((xPixel + (Variables.spriteRenderWidth / 2)),
-                (yPixel + (Variables.spriteRenderHeight / 2)));
+        this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
+                (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
         this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
     }
@@ -70,10 +68,10 @@ public class Enemy extends Character implements Entity {
         super.paint(g);
         if (eateable) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (4 * SIDE_SPRITE_SHEET)).getImagen(),
-                    xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         } else {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                    xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         }
     }
 
@@ -81,44 +79,44 @@ public class Enemy extends Character implements Entity {
         if (!isWall(direction)) {
             switch (direction) {
                 case Constants.LEFT:
-                    xPixel -= velocity;
+                    pixel.x -= velocity;
                     break;
                 case Constants.UP:
-                    yPixel -= velocity;
+                    pixel.y -= velocity;
                     break;
                 case Constants.RIGHT:
-                    xPixel += velocity;
+                    pixel.x += velocity;
                     break;
                 case Constants.DOWN:
-                    yPixel += velocity;
+                    pixel.y += velocity;
                     break;
             }
         }
         if (outBoard()) {
-            if (xPixel < 0 && direction == Constants.LEFT) {
-                xPixel = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
-            } else if (xPixel > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
-                xPixel = 0;
+            if (pixel.x < 0 && direction == Constants.LEFT) {
+                pixel.x = Variables.spriteRenderWidth * Constants.BOARD_WIDTH;
+            } else if (pixel.x > Variables.spriteRenderWidth * Constants.BOARD_WIDTH && direction == Constants.RIGHT) {
+                pixel.x = 0;
             }
         }
         changeLimits();
     }
 
     private void changeLimits() {
-        xSprite = center.x / Variables.spriteRenderWidth;
-        ySprite = center.y / Variables.spriteRenderHeight;
+        sprite.x = center.x / Variables.spriteRenderWidth;
+        sprite.y = center.y / Variables.spriteRenderHeight;
         limit.x = center.x - (limitSize / 2);
         limit.y = center.y - (limitSize / 2);
-        center.x = xPixel + (Variables.spriteRenderWidth / 2);
-        center.y = yPixel + (Variables.spriteRenderHeight / 2);
-        indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
+        center.x = pixel.x + (Variables.spriteRenderWidth / 2);
+        center.y = pixel.y + (Variables.spriteRenderHeight / 2);
+        indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
     }
 
     private void changeDirection() {
         Random rand = new Random();
         int randomNum = rand.nextInt((3 - 0) + 1);
         predirection = randomNum;
-        if (xPixel % Variables.spriteRenderWidth == 0 && yPixel % Variables.spriteRenderHeight == 0) {
+        if (pixel.x % Variables.spriteRenderWidth == 0 && pixel.y % Variables.spriteRenderHeight == 0) {
             if (!isWall(predirection)) {
                 direction = predirection;
             }
@@ -129,7 +127,7 @@ public class Enemy extends Character implements Entity {
         if (outBoard()) {
             return false;
         }
-        if (xPixel == (xSprite) * Variables.spriteRenderWidth && yPixel == (ySprite) * Variables.spriteRenderHeight) {
+        if (pixel.x == (sprite.x) * Variables.spriteRenderWidth && pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
             switch (direction) {
                 case Constants.LEFT:
                     if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - 1] != 6) {
@@ -157,10 +155,10 @@ public class Enemy extends Character implements Entity {
     }
 
     private boolean outBoard() {
-        return ySprite % Constants.BOARD_HEIGHT == 0
-                || ySprite % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
-                || xSprite % Constants.BOARD_WIDTH == 0
-                || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
+        return sprite.y % Constants.BOARD_HEIGHT == 0
+                || sprite.y % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
+                || sprite.x % Constants.BOARD_WIDTH == 0
+                || sprite.x % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
     }
 
     public void setEateable(boolean eateable) {
