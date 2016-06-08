@@ -1,21 +1,47 @@
 package epacman.characters;
 
+import epacman.sprites.SpritesSheet;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  *
  * @author ErickSteven
  */
-public interface Character {
+public class Character implements Entity{
 
-    int SIDE_SPRITE_SHEET = 6;
-    int quantitySprites = 3;
-    int animationDuration = 4;
-    int squareSide = 48;
-    int center = squareSide / 2;
+    protected SpritesSheet spritesSheet;
+    
+    protected int xPixel;
+    protected int yPixel;
+    protected int xSprite;
+    protected int ySprite;
+    
+    protected int indexPosition;
+    protected double velocity = 1;
+    
+    protected int currentIndexSprite = 0;
+    protected int counterAnimation = 0;
+    protected int direction = 0;
+    protected int predirection = 0;
+    protected boolean animateOrder;
+    
+    protected int limitSize;
+    protected Rectangle limit;
+    protected Point center;
+    
+    @Override
+    public void update() {
+    }
 
-    void update();
-
-    void paint(final Graphics g);
-
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.red);
+        g.drawRect(limit.x, limit.y, limit.width, limit.height);
+        g.setColor(Color.red);
+        g.drawRect(center.x, center.y, 1, 1);
+    }
+    
 }

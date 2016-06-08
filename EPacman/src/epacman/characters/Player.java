@@ -1,7 +1,5 @@
 package epacman.characters;
 
-import static epacman.characters.Character.animationDuration;
-import static epacman.characters.Character.quantitySprites;
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
 import epacman.common.Tools;
@@ -11,31 +9,26 @@ import epacman.sounds.Sound;
 import epacman.sounds.SoundManager;
 import epacman.sprites.SpritesSheet;
 import epacman.statesmachine.states.game.CharactersManager;
+import epacman.statesmachine.states.game.FoodManager;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static epacman.characters.Entity.ANIMATION_DURATION;
+import static epacman.characters.Entity.QUANTITY_SPRITES;
 
 /**
  *
  * @author ErickSteven
  */
-public class Player implements Character {
+public class Player extends Character implements Entity {
 
-    private SpritesSheet spritesSheet;
     private Sound eatFoodSound;
     private Sound eatSpecialFoodSound;
-    private int xPixel;
-    private int yPixel;
-    private int xSprite;
-    private int ySprite;
-    private int indexPosition;
-    private final double velocity = 2.0;
-    private int currentIndexSprite = 0;
-    private int counterAnimation = 0;
-    private int direction = 0;
-    private int predirection = 0;
-    private boolean animateOrder;
     private boolean eating = false;
     private int timeSpecial;
 
@@ -54,29 +47,24 @@ public class Player implements Character {
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
         this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
-
+        this.limitSize = Constants.SPRITE_WIDTH / 2;
+        this.center = new Point((xPixel + (Variables.spriteRenderWidth / 2)),
+                (yPixel + (Variables.spriteRenderHeight / 2)));
+        this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
     }
 
     @Override
     public void update() {
         changeDirection();
         movePlayer();
-        switch (direction) {
-            case Constants.LEFT:
-            case Constants.RIGHT:
-                if (xPixel % Variables.spriteRenderWidth >= 0 && xPixel % Variables.spriteRenderWidth < velocity) {
-                    eat();
-                }
+        for (Rectangle rect : FOODS) {
+            if (limit.intersects(rect)) {
+                eat();
                 break;
-            case Constants.UP:
-            case Constants.DOWN:
-                if (yPixel % Variables.spriteRenderHeight >= 0 && yPixel % Variables.spriteRenderHeight < velocity) {
-                    eat();
-                }
-                break;
+            }
         }
-        if (counterAnimation == animationDuration) {
-            if (currentIndexSprite == quantitySprites - 1) {
+        if (counterAnimation == ANIMATION_DURATION) {
+            if (currentIndexSprite == QUANTITY_SPRITES - 1) {
                 animateOrder = false;
             } else if (currentIndexSprite == 0) {
                 animateOrder = true;
@@ -94,8 +82,8 @@ public class Player implements Character {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                //xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
                 xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
@@ -123,8 +111,16 @@ public class Player implements Character {
                 xPixel = 0;
             }
         }
-        xSprite = xPixel / Variables.spriteRenderWidth;
-        ySprite = yPixel / Variables.spriteRenderHeight;
+        changeLimits();
+    }
+
+    private void changeLimits() {
+        xSprite = center.x / Variables.spriteRenderWidth;
+        ySprite = center.y / Variables.spriteRenderHeight;
+        limit.x = center.x - (limitSize / 2);
+        limit.y = center.y - (limitSize / 2);
+        center.x = xPixel + (Variables.spriteRenderWidth / 2);
+        center.y = yPixel + (Variables.spriteRenderHeight / 2);
         indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
     }
 
@@ -166,12 +162,16 @@ public class Player implements Character {
                 break;
             case Constants.RIGHT:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
-                    return true;
+                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
+                        return true;
+                    }
                 }
                 break;
             case Constants.DOWN:
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
-                    return true;
+                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
+                        return true;
+                    }
                 }
                 break;
         }
@@ -202,9 +202,10 @@ public class Player implements Character {
 
     private void eatFood() {
         BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+        eatFoodSound.play();
         if (!eating) {
             eating = true;
-            eatFoodSound.playInLoop();
+            //eatFoodSound.playInLoop();
         }
     }
 

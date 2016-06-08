@@ -10,7 +10,7 @@ import java.awt.Transparency;
  *
  * @author ErickVelasco
  */
-public class SpecialFood implements Character {
+public class SpecialFood implements Entity {
 
     private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", 32, 32, Transparency.TRANSLUCENT);
     private int xPixel;
@@ -30,8 +30,8 @@ public class SpecialFood implements Character {
 
     @Override
     public void update() {
-        if (counterAnimation == animationDuration) {
-            if (currentIndexSprite == 4 + quantitySprites - 1) {
+        if (counterAnimation == ANIMATION_DURATION) {
+            if (currentIndexSprite == 4 + QUANTITY_SPRITES - 1) {
                 animateOrder = false;
             } else if (currentIndexSprite == 4) {
                 animateOrder = true;

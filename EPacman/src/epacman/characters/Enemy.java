@@ -3,18 +3,18 @@ package epacman.characters;
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
 import epacman.common.Variables;
-import static epacman.characters.Character.animationDuration;
-import static epacman.characters.Character.quantitySprites;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
 import java.util.Random;
+import static epacman.characters.Entity.ANIMATION_DURATION;
+import static epacman.characters.Entity.QUANTITY_SPRITES;
 
 /**
  *
  * @author ErickSteven
  */
-public class Enemy implements Character {
+public class Enemy implements Entity {
 
     private SpritesSheet spritesSheet;
     private int xSprite;
@@ -47,8 +47,8 @@ public class Enemy implements Character {
     public void update() {
         changeDirection();
         movePlayer();
-        if (counterAnimation == animationDuration) {
-            if (currentIndexSprite == quantitySprites - 1) {
+        if (counterAnimation == ANIMATION_DURATION) {
+            if (currentIndexSprite == QUANTITY_SPRITES - 1) {
                 animateOrder = false;
             } else if (currentIndexSprite == 0) {
                 animateOrder = true;
