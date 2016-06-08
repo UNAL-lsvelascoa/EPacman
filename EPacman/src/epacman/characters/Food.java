@@ -15,18 +15,14 @@ import java.awt.Transparency;
 public class Food extends Character implements Entity {
 
     private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
-    private int xPixel;
-    private int yPixel;
-    private int counterAnimation = 0;
-    private int currentIndexSprite = 1;
-    private boolean animateOrder = false;
 
     public Food(int xPixel, int yPixel) {
         this.xPixel = xPixel;
         this.yPixel = yPixel;
+        currentIndexSprite = 1;
         this.limitSize = 6;
         this.limit = new Rectangle(xPixel, yPixel, limitSize, limitSize);
-        this.center = new Point(xPixel, yPixel);
+        this.center = new Point(xPixel-(limitSize/2), yPixel-(limitSize/2));
     }
 
     @Override
@@ -53,21 +49,21 @@ public class Food extends Character implements Entity {
         super.paint(g);
         g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         g.drawRect(limit.x, limit.y, limit.width, limit.height);
-        if(!FOODS.contains(limit)){
+        if (!FOODS.contains(limit)) {
             FOODS.add(new Rectangle(limit));
         }
     }
 
     public void setxPixel(int xPixel) {
         this.xPixel = xPixel;
-        this.limit.x = (xPixel+(Variables.spriteRenderWidth/2)-(limitSize/2));
-        this.center.x = (xPixel+(Variables.spriteRenderWidth/2));
+        this.limit.x = (xPixel + (Variables.spriteRenderWidth / 2) - (limitSize / 2));
+        this.center.x = (xPixel + (Variables.spriteRenderWidth / 2));
     }
 
     public void setyPixel(int yPixel) {
         this.yPixel = yPixel;
-        this.limit.y = (yPixel+(Variables.spriteRenderHeight/2)-(limitSize/2));
-        this.center.y = (yPixel+(Variables.spriteRenderHeight/2));
+        this.limit.y = (yPixel + (Variables.spriteRenderHeight / 2) - (limitSize / 2));
+        this.center.y = (yPixel + (Variables.spriteRenderHeight / 2));
     }
 
 }

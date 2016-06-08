@@ -14,12 +14,12 @@ import java.awt.Graphics;
  */
 public class FoodManager implements StateGame {
 
-    public static final Food FOOD = new Food(0, 0);
-    private final SpecialFood specialFood = new SpecialFood();
+    private final Food food = new Food(0, 0);
+    private final SpecialFood specialFood = new SpecialFood(0, 0);
 
     @Override
     public void update() {
-        FOOD.update();
+        food.update();
         specialFood.update();
     }
 
@@ -28,9 +28,9 @@ public class FoodManager implements StateGame {
         for (int i = 0; i < Constants.BOARD_HEIGHT; i++) {
             for (int j = 0; j < Constants.BOARD_WIDTH; j++) {
                 if (BoardMatrix.CLASSIC_BOARD_FOOD[j + (i * Constants.BOARD_WIDTH)] == 1) {
-                    FOOD.setxPixel(j * Variables.spriteRenderWidth);
-                    FOOD.setyPixel(i * Variables.spriteRenderHeight);
-                    FOOD.paint(g);
+                    food.setxPixel(j * Variables.spriteRenderWidth);
+                    food.setyPixel(i * Variables.spriteRenderHeight);
+                    food.paint(g);
                 } else if (BoardMatrix.CLASSIC_BOARD_FOOD[j + (i * Constants.BOARD_WIDTH)] == 2) {
                     specialFood.setxPixel(j * Variables.spriteRenderWidth);
                     specialFood.setyPixel(i * Variables.spriteRenderHeight);

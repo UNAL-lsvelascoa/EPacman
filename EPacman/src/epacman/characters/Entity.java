@@ -12,7 +12,7 @@ public interface Entity {
 
     int SIDE_SPRITE_SHEET = 6;
     int QUANTITY_SPRITES = 3;
-    int ANIMATION_DURATION = 4;
+    int ANIMATION_DURATION = 3;
     int SPRITE_SIDE = 48;
     ArrayList<Rectangle> FOODS = new ArrayList<>();
 

@@ -1,7 +1,5 @@
 package epacman.characters;
 
-import epacman.common.BoardMatrix;
-import epacman.common.Constants;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
@@ -10,54 +8,24 @@ import java.awt.Transparency;
  *
  * @author ErickVelasco
  */
-public class SpecialFood implements Entity {
+public class SpecialFood extends Food implements Entity {
 
     private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", 32, 32, Transparency.TRANSLUCENT);
-    private int xPixel;
-    private int yPixel;
-    private int counterAnimation = 0;
-    private int currentIndexSprite = 4;
-    private boolean animateOrder = false;
-
-    public SpecialFood() {
-
-    }
 
     public SpecialFood(int xPixel, int yPixel) {
-        this.xPixel = xPixel;
-        this.yPixel = yPixel;
+        super(xPixel, yPixel);
+        currentIndexSprite = 4;
     }
 
     @Override
     public void update() {
-        if (counterAnimation == ANIMATION_DURATION) {
-            if (currentIndexSprite == 4 + QUANTITY_SPRITES - 1) {
-                animateOrder = false;
-            } else if (currentIndexSprite == 4) {
-                animateOrder = true;
-            }
-            if (animateOrder) {
-                currentIndexSprite++;
-            } else {
-                currentIndexSprite--;
-            }
-            counterAnimation = 4;
-        } else {
-            counterAnimation++;
-        }
+        super.update();
     }
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, null);
-    }
-
-    public void setxPixel(int xPixel) {
-        this.xPixel = xPixel;
-    }
-
-    public void setyPixel(int yPixel) {
-        this.yPixel = yPixel;
     }
 
 }
