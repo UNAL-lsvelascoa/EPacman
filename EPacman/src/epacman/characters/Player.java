@@ -65,13 +65,13 @@ public class Player implements Character {
             case Constants.LEFT:
             case Constants.RIGHT:
                 if (xPixel % Variables.spriteRenderWidth >= 0 && xPixel % Variables.spriteRenderWidth < velocity) {
-                    eatFood();
+                    eat();
                 }
                 break;
             case Constants.UP:
             case Constants.DOWN:
                 if (yPixel % Variables.spriteRenderHeight >= 0 && yPixel % Variables.spriteRenderHeight < velocity) {
-                    eatFood();
+                    eat();
                 }
                 break;
         }
@@ -185,40 +185,53 @@ public class Player implements Character {
                 || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
     }
 
+    private void eat() {
+        switch (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition]) {
+            case 1:
+                eatFood();
+                break;
+            case 2:
+                eatSpecialFood();
+                break;
+            case 3:
+                eatFoodSound.close();
+                eating = false;
+                break;
+        }
+    }
+
     private void eatFood() {
-        if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
-            BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-            if (!eating) {
-                eating = true;
-                eatFoodSound.playInLoop();
-            }
+        BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+        if (!eating) {
+            eating = true;
+            eatFoodSound.playInLoop();
+        }
+    }
+
+    private void eatSpecialFood() {
+        eatFoodSound.close();
+        eating = false;
+        BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+        eatSpecialFoodSound.play();
+        if (thread.isAlive()) {
+            timeSpecial += Constants.TIME_SPECIAL;
         } else {
-            eatFoodSound.close();
-            eating = false;
-            if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 2) {
-                BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-                eatSpecialFoodSound.play();
-                if (thread.isAlive()) {
-                    timeSpecial += Constants.TIME_SPECIAL;
-                } else {
-                    thread = new Thread(() -> {
-                        timeSpecial = Constants.TIME_SPECIAL;
-                        CharactersManager.changeEateables(true);
-                        SoundManager.changeBackground(Constants.TYPE_BACKGROUND_SPECIAL);
-                        while (timeSpecial > 0) {
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            timeSpecial -= 100;
-                        }
-                        CharactersManager.changeEateables(false);
-                        SoundManager.changeBackground(Constants.TYPE_BACKGROUND_NORMAL);
-                    });
-                    thread.start();
+            thread = new Thread(() -> {
+                timeSpecial = Constants.TIME_SPECIAL;
+                CharactersManager.changeEateables(true);
+                SoundManager.changeBackground(Constants.TYPE_BACKGROUND_SPECIAL);
+                while (timeSpecial > 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    timeSpecial -= 100;
                 }
-            }
+                CharactersManager.changeEateables(false);
+                SoundManager.changeBackground(Constants.TYPE_BACKGROUND_NORMAL);
+            });
+            thread.start();
         }
     }
 }
