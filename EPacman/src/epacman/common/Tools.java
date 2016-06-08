@@ -1,5 +1,7 @@
 package epacman.common;
 
+import epacman.sounds.SoundManager;
+import epacman.statesmachine.states.game.CharactersManager;
 import javax.swing.JFrame;
 
 /**
@@ -14,4 +16,5 @@ public class Tools {
         Variables.spriteRenderHeight = Variables.boardHeight / Constants.BOARD_HEIGHT;
         Variables.spriteRenderWidth = Variables.spriteRenderHeight;
     }
+
 }

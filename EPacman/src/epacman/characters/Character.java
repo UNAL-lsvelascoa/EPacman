@@ -8,7 +8,7 @@ import java.awt.Graphics;
  */
 public interface Character {
 
-    int sideSpriteSheet = 5;
+    int SIDE_SPRITE_SHEET = 6;
     int quantitySprites = 3;
     int animationDuration = 4;
     int squareSide = 48;

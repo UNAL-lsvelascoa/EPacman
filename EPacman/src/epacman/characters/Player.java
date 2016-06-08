@@ -4,12 +4,17 @@ import static epacman.characters.Character.animationDuration;
 import static epacman.characters.Character.quantitySprites;
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
+import epacman.common.Tools;
 import epacman.common.Variables;
 import epacman.control.ControlManager;
 import epacman.sounds.Sound;
+import epacman.sounds.SoundManager;
 import epacman.sprites.SpritesSheet;
+import epacman.statesmachine.states.game.CharactersManager;
 import java.awt.Graphics;
 import java.awt.Transparency;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,6 +36,10 @@ public class Player implements Character {
     private int direction = 0;
     private int predirection = 0;
     private boolean animateOrder;
+    private boolean eating = false;
+    private int timeSpecial;
+
+    private Thread thread = new Thread();
 
     public Player(int x, int y, String uriSpriteSheet) {
         initPlayer(x, y, uriSpriteSheet);
@@ -45,6 +54,7 @@ public class Player implements Character {
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
         this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
+
     }
 
     @Override
@@ -84,7 +94,7 @@ public class Player implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(),
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
                 //xPixel - ((squareSide - 32) / 2), yPixel - ((squareSide - 32) / 2), squareSide, squareSide, null);
                 xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
@@ -178,19 +188,35 @@ public class Player implements Character {
     private void eatFood() {
         if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 1) {
             BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-            if (!Variables.playingEating) {
-                Variables.playingEating = true;
+            if (!eating) {
+                eating = true;
                 eatFoodSound.playInLoop();
             }
         } else {
             eatFoodSound.close();
-            Variables.playingEating = false;
+            eating = false;
             if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] == 2) {
                 BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
                 eatSpecialFoodSound.play();
-                if (Variables.backgroundSoundType != Constants.TYPE_BACKGROUND_SPECIAL) {
-                    Variables.playingBackground = false;
-                    Variables.backgroundSoundType = Constants.TYPE_BACKGROUND_SPECIAL;
+                if (thread.isAlive()) {
+                    timeSpecial += Constants.TIME_SPECIAL;
+                } else {
+                    thread = new Thread(() -> {
+                        timeSpecial = Constants.TIME_SPECIAL;
+                        CharactersManager.changeEateables(true);
+                        SoundManager.changeBackground(Constants.TYPE_BACKGROUND_SPECIAL);
+                        while (timeSpecial > 0) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            timeSpecial -= 100;
+                        }
+                        CharactersManager.changeEateables(false);
+                        SoundManager.changeBackground(Constants.TYPE_BACKGROUND_NORMAL);
+                    });
+                    thread.start();
                 }
             }
         }

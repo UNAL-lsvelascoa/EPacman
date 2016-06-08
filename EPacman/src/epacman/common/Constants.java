@@ -30,5 +30,7 @@ public interface Constants {
     int TYPE_BACKGROUND_NORMAL = 1;
     int TYPE_BACKGROUND_SPECIAL= 2;
     int TYPE_BACKGROUND_TO_HOME = 3;
+    
+    int TIME_SPECIAL = 10000;
 
 }

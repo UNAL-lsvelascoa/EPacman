@@ -21,13 +21,14 @@ public class Enemy implements Character {
     private int ySprite;
     private int xPixel;
     private int yPixel;
-    private final double velocity = 2.0;
+    private double velocity = 2.0;
     private int direction = Constants.LEFT;
     private int predirection = Constants.LEFT;
     private int currentIndexSprite = 0;
     private int counterAnimation = 0;
     private int indexPosition = 0;
     private boolean animateOrder;
+    private boolean eateable = false;
 
     public Enemy(int x, int y, String uriSpriteSheet) {
         initEnemy(x, y, uriSpriteSheet);
@@ -65,7 +66,13 @@ public class Enemy implements Character {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * sideSpriteSheet)).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        if (eateable) {
+            g.drawImage(spritesSheet.getSprite(currentIndexSprite + (4 * SIDE_SPRITE_SHEET)).getImagen(),
+                    xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        } else {
+            g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
+                    xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        }
     }
 
     private void movePlayer() {
@@ -146,6 +153,11 @@ public class Enemy implements Character {
                 || ySprite % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
                 || xSprite % Constants.BOARD_WIDTH == 0
                 || xSprite % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
+    }
+
+    public void setEateable(boolean eateable) {
+        this.eateable = eateable;
+        this.velocity = velocity / 1;
     }
 
 }
