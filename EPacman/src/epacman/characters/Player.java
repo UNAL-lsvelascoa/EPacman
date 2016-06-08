@@ -47,7 +47,7 @@ public class Player extends Character implements Entity {
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
         this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
-        this.limitSize = Constants.SPRITE_WIDTH / 2;
+        this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((xPixel + (Variables.spriteRenderWidth / 2)),
                 (yPixel + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
@@ -57,9 +57,14 @@ public class Player extends Character implements Entity {
     public void update() {
         changeDirection();
         movePlayer();
-        for (Rectangle rect : FOODS) {
+        for (Rectangle rect : FOODS.keySet()) {
             if (limit.intersects(rect)) {
-                eat();
+                if (FOODS.get(rect)) {
+                    eat();
+                    FOODS.replace(rect, false);
+                } else {
+                    eat();
+                }
                 break;
             }
         }
@@ -81,7 +86,8 @@ public class Player extends Character implements Entity {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g
+    ) {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
                 xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
@@ -202,10 +208,10 @@ public class Player extends Character implements Entity {
 
     private void eatFood() {
         BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-        eatFoodSound.play();
+        //eatFoodSound.play();
         if (!eating) {
             eating = true;
-            //eatFoodSound.playInLoop();
+            eatFoodSound.playInLoop();
         }
     }
 

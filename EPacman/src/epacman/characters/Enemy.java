@@ -9,26 +9,19 @@ import java.awt.Transparency;
 import java.util.Random;
 import static epacman.characters.Entity.ANIMATION_DURATION;
 import static epacman.characters.Entity.QUANTITY_SPRITES;
+import epacman.sounds.Sound;
+import epacman.statesmachine.states.game.CharactersManager;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  *
  * @author ErickSteven
  */
-public class Enemy implements Entity {
+public class Enemy extends Character implements Entity {
 
-    private SpritesSheet spritesSheet;
-    private int xSprite;
-    private int ySprite;
-    private int xPixel;
-    private int yPixel;
-    private double velocity = 2.0;
-    private int direction = Constants.LEFT;
-    private int predirection = Constants.LEFT;
-    private int currentIndexSprite = 0;
-    private int counterAnimation = 0;
-    private int indexPosition = 0;
-    private boolean animateOrder;
     private boolean eateable = false;
+    private Sound eatSpecialFoodSound;
 
     public Enemy(int x, int y, String uriSpriteSheet) {
         initEnemy(x, y, uriSpriteSheet);
@@ -41,12 +34,20 @@ public class Enemy implements Entity {
         this.yPixel = ySprite * Variables.spriteRenderHeight;
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.limitSize = Variables.spriteRenderWidth;
+        this.center = new Point((xPixel + (Variables.spriteRenderWidth / 2)),
+                (yPixel + (Variables.spriteRenderHeight / 2)));
+        this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
+        this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
     }
 
     @Override
     public void update() {
         changeDirection();
-        movePlayer();
+        moveEnemy();
+        if(limit.intersects(CharactersManager.getPLAYER().limit)){
+            eatSpecialFoodSound.play();
+        }
         if (counterAnimation == ANIMATION_DURATION) {
             if (currentIndexSprite == QUANTITY_SPRITES - 1) {
                 animateOrder = false;
@@ -66,6 +67,7 @@ public class Enemy implements Entity {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         if (eateable) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (4 * SIDE_SPRITE_SHEET)).getImagen(),
                     xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
@@ -75,7 +77,7 @@ public class Enemy implements Entity {
         }
     }
 
-    private void movePlayer() {
+    private void moveEnemy() {
         if (!isWall(direction)) {
             switch (direction) {
                 case Constants.LEFT:
@@ -99,8 +101,16 @@ public class Enemy implements Entity {
                 xPixel = 0;
             }
         }
-        xSprite = xPixel / Variables.spriteRenderWidth;
-        ySprite = yPixel / Variables.spriteRenderHeight;
+        changeLimits();
+    }
+
+    private void changeLimits() {
+        xSprite = center.x / Variables.spriteRenderWidth;
+        ySprite = center.y / Variables.spriteRenderHeight;
+        limit.x = center.x - (limitSize / 2);
+        limit.y = center.y - (limitSize / 2);
+        center.x = xPixel + (Variables.spriteRenderWidth / 2);
+        center.y = yPixel + (Variables.spriteRenderHeight / 2);
         indexPosition = (ySprite * Constants.BOARD_WIDTH) + xSprite;
     }
 
@@ -119,31 +129,29 @@ public class Enemy implements Entity {
         if (outBoard()) {
             return false;
         }
-        switch (direction) {
-            case Constants.LEFT:
-                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - 1] != 6) {
-                    if (xPixel == (xSprite) * Variables.spriteRenderWidth) {
+        if (xPixel == (xSprite) * Variables.spriteRenderWidth && yPixel == (ySprite) * Variables.spriteRenderHeight) {
+            switch (direction) {
+                case Constants.LEFT:
+                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - 1] != 6) {
                         return true;
                     }
-                }
-                break;
-            case Constants.UP:
-                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - Constants.BOARD_WIDTH] != 6) {
-                    if (yPixel == (ySprite) * Variables.spriteRenderHeight) {
+                    break;
+                case Constants.UP:
+                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - Constants.BOARD_WIDTH] != 6) {
                         return true;
                     }
-                }
-                break;
-            case Constants.RIGHT:
-                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + 1] != 6) {
-                    return true;
-                }
-                break;
-            case Constants.DOWN:
-                if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + Constants.BOARD_WIDTH] != 6) {
-                    return true;
-                }
-                break;
+                    break;
+                case Constants.RIGHT:
+                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + 1] != 6) {
+                        return true;
+                    }
+                    break;
+                case Constants.DOWN:
+                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + Constants.BOARD_WIDTH] != 6) {
+                        return true;
+                    }
+                    break;
+            }
         }
         return false;
     }

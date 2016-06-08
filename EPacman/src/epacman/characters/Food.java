@@ -20,7 +20,7 @@ public class Food extends Character implements Entity {
         this.xPixel = xPixel;
         this.yPixel = yPixel;
         currentIndexSprite = 1;
-        this.limitSize = 6;
+        this.limitSize = 2;
         this.limit = new Rectangle(xPixel, yPixel, limitSize, limitSize);
         this.center = new Point(xPixel-(limitSize/2), yPixel-(limitSize/2));
     }
@@ -49,8 +49,8 @@ public class Food extends Character implements Entity {
         super.paint(g);
         g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), xPixel, yPixel, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         g.drawRect(limit.x, limit.y, limit.width, limit.height);
-        if (!FOODS.contains(limit)) {
-            FOODS.add(new Rectangle(limit));
+        if (!FOODS.containsKey(limit)) {
+            FOODS.put(new Rectangle(limit), true);
         }
     }
 
