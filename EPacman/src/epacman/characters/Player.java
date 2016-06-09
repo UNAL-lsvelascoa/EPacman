@@ -117,14 +117,35 @@ public class Player extends Character implements Entity {
     }
 
     private void changeDirection() {
-        if (ControlManager.KEYBOARD.isLeft()) {
-            predirection = Constants.LEFT;
-        } else if (ControlManager.KEYBOARD.isUp()) {
-            predirection = Constants.UP;
-        } else if (ControlManager.KEYBOARD.isRight()) {
-            predirection = Constants.RIGHT;
-        } else if (ControlManager.KEYBOARD.isDown()) {
-            predirection = Constants.DOWN;
+        switch (ControlManager.direction()) {
+            case Constants.LEFT:
+                if (direction == Constants.RIGHT) {
+                    direction = Constants.LEFT;
+                } else {
+                    predirection = Constants.LEFT;
+                }
+                break;
+            case Constants.UP:
+                if (direction == Constants.DOWN) {
+                    direction = Constants.UP;
+                } else {
+                    predirection = Constants.UP;
+                }
+                break;
+            case Constants.RIGHT:
+                if (direction == Constants.LEFT) {
+                    direction = Constants.RIGHT;
+                } else {
+                    predirection = Constants.RIGHT;
+                }
+                break;
+            case Constants.DOWN:
+                if (direction == Constants.UP) {
+                    direction = Constants.DOWN;
+                } else {
+                    predirection = Constants.DOWN;
+                }
+                break;
         }
         if (pixel.x % Variables.spriteRenderWidth == 0 && pixel.y % Variables.spriteRenderHeight == 0) {
             if (!isWall(predirection)) {
