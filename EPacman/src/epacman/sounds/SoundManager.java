@@ -10,6 +10,7 @@ public class SoundManager {
 
     private static final Sound eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
     private static final Sound eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
+    private static final Sound eatEnemy = new Sound(Constants.URI_CLASSIC_SOUND_EAT_ENEMY);
     private static final Sound backgroundNormal = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_NORMAL);
     private static final Sound backgroundSpecial = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_SPECIAL);
     private static final Sound backgroundToHome = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_TO_HOME);
@@ -25,6 +26,10 @@ public class SoundManager {
 
     public static void stopEat() {
         eatFoodSound.close();
+    }
+
+    public static void playEatEnemy() {
+        eatEnemy.play();
     }
 
     public void playBackground(final int typeBackground) {
@@ -71,7 +76,7 @@ public class SoundManager {
         }
     }
 
-    public void playDie() {
+    public static void playDie() {
         die.play();
     }
 

@@ -40,6 +40,7 @@ public class Player extends Character implements Entity {
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
+        this.velocity = 1.0;
     }
 
     @Override

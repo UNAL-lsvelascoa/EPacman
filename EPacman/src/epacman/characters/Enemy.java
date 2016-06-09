@@ -21,7 +21,7 @@ import java.awt.Rectangle;
 public class Enemy extends Character implements Entity {
 
     private boolean eateable = false;
-    private Sound dieSound;
+    private boolean alive = true;
 
     public Enemy(int x, int y, String uriSpriteSheet) {
         initEnemy(x, y, uriSpriteSheet);
@@ -36,7 +36,6 @@ public class Enemy extends Character implements Entity {
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.dieSound = new Sound(Constants.URI_CLASSIC_SOUND_DIE);
     }
 
     @Override
@@ -44,11 +43,16 @@ public class Enemy extends Character implements Entity {
         if (CharactersManager.getPLAYER().isAlive()) {
             changeDirection();
             moveEnemy();
-            if (limit.intersects(CharactersManager.getPLAYER().limit)) {
-                dieSound.play();
-                StatesManager.changeState(Constants.STATE_PAUSE);
-                CharactersManager.getPLAYER().setAlive(false);
-                SoundManager.stopEat();
+            if (limit.intersects(CharactersManager.getPLAYER().limit) && alive) {
+                if (eateable) {
+                    SoundManager.playDie();
+                    StatesManager.changeState(Constants.STATE_PAUSE);
+                    CharactersManager.getPLAYER().setAlive(false);
+                    SoundManager.stopEat();
+                } else {
+                    SoundManager.playEatEnemy();
+                    alive = false;
+                }
             }
         }
         super.update();
@@ -57,11 +61,14 @@ public class Enemy extends Character implements Entity {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (eateable) {
+        if (eateable && alive) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (4 * SIDE_SPRITE_SHEET)).getImagen(),
                     pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
-        } else {
+        } else if (alive) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
+                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        } else {
+            g.drawImage(spritesSheet.getSprite(currentIndexSprite + (5 * SIDE_SPRITE_SHEET)).getImagen(),
                     pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         }
     }
@@ -155,6 +162,10 @@ public class Enemy extends Character implements Entity {
     public void setEateable(boolean eateable) {
         this.eateable = eateable;
         this.velocity = velocity / 1;
+    }
+    
+    public boolean isAlive(){
+        return alive;
     }
 
 }

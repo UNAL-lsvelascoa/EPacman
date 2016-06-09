@@ -30,10 +30,18 @@ public class CharactersManager {
     }
 
     public static void changeEateables(final boolean eateable) {
-        ENEMY1.setEateable(eateable);
-        ENEMY2.setEateable(eateable);
-        ENEMY3.setEateable(eateable);
-        ENEMY4.setEateable(eateable);
+        if (ENEMY1.isAlive()) {
+            ENEMY1.setEateable(eateable);
+        }
+        if (ENEMY2.isAlive()) {
+            ENEMY2.setEateable(eateable);
+        }
+        if (ENEMY3.isAlive()) {
+            ENEMY3.setEateable(eateable);
+        }
+        if (ENEMY4.isAlive()) {
+            ENEMY4.setEateable(eateable);
+        }
     }
 
     public static Player getPLAYER() {
