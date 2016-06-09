@@ -1,26 +1,25 @@
-package epacman.statesmachine.states.game;
+package epacman.statesmachine.states.die;
 
+import epacman.statesmachine.states.game.*;
 import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.sounds.SoundManager;
 import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
 
-public class GameManager implements StateGame {
+public class DieManager implements StateGame {
 
     private final MapManager mapManager = new MapManager();
     private final CharactersManager charactersManager = new CharactersManager();
     private final SoundManager soundManager = new SoundManager();
 
     @Override
-    public void init() {
-        soundManager.playBackground(Variables.backgroundSoundType);
-        Variables.playingBackground = true;
+    public void init(){
+        soundManager.playDie();
     }
-
+    
     @Override
     public void update() {
-        mapManager.update();
         charactersManager.update();
     }
 
@@ -32,7 +31,6 @@ public class GameManager implements StateGame {
 
     @Override
     public void finish() {
-        soundManager.closeAll();
     }
 
 }

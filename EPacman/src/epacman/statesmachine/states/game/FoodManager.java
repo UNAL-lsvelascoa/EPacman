@@ -12,18 +12,16 @@ import java.awt.Graphics;
  *
  * @author ErickVelasco
  */
-public class FoodManager implements StateGame {
+public class FoodManager {
 
     private final Food food = new Food(0, 0);
     private final SpecialFood specialFood = new SpecialFood(0, 0);
 
-    @Override
     public void update() {
         food.update();
         specialFood.update();
     }
 
-    @Override
     public void paint(Graphics g) {
         for (int i = 0; i < Constants.BOARD_HEIGHT; i++) {
             for (int j = 0; j < Constants.BOARD_WIDTH; j++) {

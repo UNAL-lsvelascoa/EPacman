@@ -5,7 +5,7 @@ import epacman.characters.Player;
 import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
 
-public class CharactersManager implements StateGame {
+public class CharactersManager {
 
     private static final Player PLAYER = new Player(14, 23, "/media/sprites/ClassicPlayer.png");
     private static final Enemy ENEMY1 = new Enemy(12, 13, "/media/sprites/ClassicEnemy1.png");
@@ -13,7 +13,6 @@ public class CharactersManager implements StateGame {
     private static final Enemy ENEMY3 = new Enemy(15, 13, "/media/sprites/ClassicEnemy3.png");
     private static final Enemy ENEMY4 = new Enemy(15, 15, "/media/sprites/ClassicEnemy4.png");
 
-    @Override
     public void update() {
         PLAYER.update();
         ENEMY1.update();
@@ -22,7 +21,6 @@ public class CharactersManager implements StateGame {
         ENEMY4.update();
     }
 
-    @Override
     public void paint(Graphics g) {
         PLAYER.paint(g);
         ENEMY1.paint(g);

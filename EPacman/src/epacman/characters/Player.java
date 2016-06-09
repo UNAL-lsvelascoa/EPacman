@@ -2,24 +2,17 @@ package epacman.characters;
 
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
-import epacman.common.Tools;
 import epacman.common.Variables;
 import epacman.control.ControlManager;
-import epacman.sounds.Sound;
 import epacman.sounds.SoundManager;
 import epacman.sprites.SpritesSheet;
 import epacman.statesmachine.states.game.CharactersManager;
-import epacman.statesmachine.states.game.FoodManager;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static epacman.characters.Entity.ANIMATION_DURATION;
-import static epacman.characters.Entity.QUANTITY_SPRITES;
 
 /**
  *
@@ -27,9 +20,8 @@ import static epacman.characters.Entity.QUANTITY_SPRITES;
  */
 public class Player extends Character implements Entity {
 
-    private Sound eatFoodSound;
-    private Sound eatSpecialFoodSound;
     private boolean eating = false;
+    private boolean alive = true;
     private int timeSpecial;
     private int prevStep;
 
@@ -44,8 +36,6 @@ public class Player extends Character implements Entity {
         this.sprite = new Point(xSprite, ySprite);
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.eatFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_FOOD);
-        this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
         this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
@@ -54,17 +44,22 @@ public class Player extends Character implements Entity {
 
     @Override
     public void update() {
-        changeDirection();
-        movePlayer();
-        for (Rectangle rect : FOODS.keySet()) {
-            if (limit.intersects(rect)) {
-                if (FOODS.get(rect)) {
-                    eat();
-                    FOODS.replace(rect, false);
-                } else {
+        if (alive) {
+            changeDirection();
+            movePlayer();
+            for (Rectangle rect : FOODS.keySet()) {
+                if (limit.intersects(rect)) {
+                    if (FOODS.get(rect)) {
+                        eat();
+                        FOODS.replace(rect, false);
+                    } else {
+                    }
+                    break;
                 }
-                break;
             }
+        } else {
+            direction = Constants.DIE;
+            animationDuration = 20;
         }
         super.update();
     }
@@ -92,8 +87,8 @@ public class Player extends Character implements Entity {
                     pixel.y += velocity;
                     break;
             }
-        }else{
-            eatFoodSound.close();
+        } else {
+            SoundManager.stopEat();
             eating = false;
         }
         if (outBoard()) {
@@ -115,7 +110,7 @@ public class Player extends Character implements Entity {
         center.y = pixel.y + (Variables.spriteRenderHeight / 2);
         indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
         if (prevStep != indexPosition && BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] != 1) {
-            eatFoodSound.close();
+            SoundManager.stopEat();
             eating = false;
         }
         prevStep = indexPosition;
@@ -200,15 +195,15 @@ public class Player extends Character implements Entity {
         //eatFoodSound.play();
         if (!eating) {
             eating = true;
-            eatFoodSound.playInLoop();
+            SoundManager.playEat(false);
         }
     }
 
     private void eatSpecialFood() {
-        eatFoodSound.close();
+        SoundManager.stopEat();
         eating = false;
         BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
-        eatSpecialFoodSound.play();
+        SoundManager.playEat(true);
         if (thread.isAlive()) {
             timeSpecial += Constants.TIME_SPECIAL;
         } else {
@@ -229,5 +224,13 @@ public class Player extends Character implements Entity {
             });
             thread.start();
         }
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

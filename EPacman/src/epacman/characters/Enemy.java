@@ -7,9 +7,9 @@ import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
 import java.util.Random;
-import static epacman.characters.Entity.ANIMATION_DURATION;
-import static epacman.characters.Entity.QUANTITY_SPRITES;
 import epacman.sounds.Sound;
+import epacman.sounds.SoundManager;
+import epacman.statesmachine.StatesManager;
 import epacman.statesmachine.states.game.CharactersManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -21,7 +21,7 @@ import java.awt.Rectangle;
 public class Enemy extends Character implements Entity {
 
     private boolean eateable = false;
-    private Sound eatSpecialFoodSound;
+    private Sound dieSound;
 
     public Enemy(int x, int y, String uriSpriteSheet) {
         initEnemy(x, y, uriSpriteSheet);
@@ -32,35 +32,26 @@ public class Enemy extends Character implements Entity {
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.indexPosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.limitSize = Variables.spriteRenderWidth;
+        this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.eatSpecialFoodSound = new Sound(Constants.URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD);
+        this.dieSound = new Sound(Constants.URI_CLASSIC_SOUND_DIE);
     }
 
     @Override
     public void update() {
-        changeDirection();
-        moveEnemy();
-        if(limit.intersects(CharactersManager.getPLAYER().limit)){
-            eatSpecialFoodSound.play();
-        }
-        if (counterAnimation == ANIMATION_DURATION) {
-            if (currentIndexSprite == QUANTITY_SPRITES - 1) {
-                animateOrder = false;
-            } else if (currentIndexSprite == 0) {
-                animateOrder = true;
+        if (CharactersManager.getPLAYER().isAlive()) {
+            changeDirection();
+            moveEnemy();
+            if (limit.intersects(CharactersManager.getPLAYER().limit)) {
+                dieSound.play();
+                StatesManager.changeState(Constants.STATE_PAUSE);
+                CharactersManager.getPLAYER().setAlive(false);
+                SoundManager.stopEat();
             }
-            if (animateOrder) {
-                currentIndexSprite++;
-            } else {
-                currentIndexSprite--;
-            }
-            counterAnimation = 0;
-        } else {
-            counterAnimation++;
         }
+        super.update();
     }
 
     @Override

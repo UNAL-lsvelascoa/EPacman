@@ -20,6 +20,7 @@ public class Character implements Entity {
     protected int indexPosition;
     protected double velocity = 1;
 
+    protected int animationDuration = 3;
     protected int currentIndexSprite = 0;
     protected int initialSprite = 0;
     protected int counterAnimation = 0;
@@ -33,7 +34,7 @@ public class Character implements Entity {
 
     @Override
     public void update() {
-        if (counterAnimation == ANIMATION_DURATION) {
+        if (counterAnimation == animationDuration) {
             if (currentIndexSprite == (QUANTITY_SPRITES + initialSprite) - 1) {
                 animateOrder = false;
             } else if (currentIndexSprite == initialSprite) {

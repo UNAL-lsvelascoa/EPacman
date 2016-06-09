@@ -13,6 +13,7 @@ public interface Constants {
     int UP = 1;
     int RIGHT = 2;
     int DOWN = 3;
+    int DIE = 4;
     int BOARD_HEIGHT = 31;
     int BOARD_WIDTH = 28;
     int SPRITE_HEIGHT = 32;
@@ -21,11 +22,15 @@ public interface Constants {
     int SCREEN_WIDTH = (int) SCREEN_SIZE.getWidth();
     int SCREEN_HEIGHT = (int) SCREEN_SIZE.getHeight();
     
+    int STATE_GAME = 0;
+    int STATE_PAUSE = 1;
+    
     String URI_CLASSIC_SOUND_EAT_FOOD = "src/media/audio/ClassicEatFood.wav";
     String URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD = "src/media/audio/ClassicEatSpecialFood.wav";
     String URI_CLASSIC_SOUND_BACKGROUND_NORMAL = "src/media/audio/ClassicBackgroundNormal.wav";
     String URI_CLASSIC_SOUND_BACKGROUND_SPECIAL = "src/media/audio/ClassicBackgroundSpecial.wav";
     String URI_CLASSIC_SOUND_BACKGROUND_TO_HOME = "src/media/audio/ClassicBackgroundToHome.wav";
+    String URI_CLASSIC_SOUND_DIE = "src/media/audio/ClassicDie.wav";
     
     int TYPE_BACKGROUND_NORMAL = 1;
     int TYPE_BACKGROUND_SPECIAL= 2;
