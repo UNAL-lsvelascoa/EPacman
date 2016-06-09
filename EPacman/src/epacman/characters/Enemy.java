@@ -45,13 +45,13 @@ public class Enemy extends Character implements Entity {
             moveEnemy();
             if (limit.intersects(CharactersManager.getPLAYER().limit) && alive) {
                 if (eateable) {
+                    SoundManager.playEatEnemy();
+                    alive = false;
+                } else {
                     SoundManager.playDie();
                     StatesManager.changeState(Constants.STATE_PAUSE);
                     CharactersManager.getPLAYER().setAlive(false);
                     SoundManager.stopEat();
-                } else {
-                    SoundManager.playEatEnemy();
-                    alive = false;
                 }
             }
         }
@@ -128,22 +128,22 @@ public class Enemy extends Character implements Entity {
         if (pixel.x == (sprite.x) * Variables.spriteRenderWidth && pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
             switch (direction) {
                 case Constants.LEFT:
-                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - 1] != 6) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0) {
                         return true;
                     }
                     break;
                 case Constants.UP:
-                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition - Constants.BOARD_WIDTH] != 6) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0) {
                         return true;
                     }
                     break;
                 case Constants.RIGHT:
-                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + 1] != 6) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
                         return true;
                     }
                     break;
                 case Constants.DOWN:
-                    if (BoardMatrix.CLASSIC_BOARD_SPRITES[indexPosition + Constants.BOARD_WIDTH] != 6) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
                         return true;
                     }
                     break;
@@ -163,8 +163,8 @@ public class Enemy extends Character implements Entity {
         this.eateable = eateable;
         this.velocity = velocity / 1;
     }
-    
-    public boolean isAlive(){
+
+    public boolean isAlive() {
         return alive;
     }
 

@@ -38,10 +38,15 @@ public class EPacman {
         stateManager = new StatesManager();
     }
 
+    long referenciaActualizacion = System.nanoTime();
+    long referenciaContador = System.nanoTime();
+    double tiempoTranscurrido;
+    double delta = 0;  //Cantidad de tiempo que pasa hasta una actualización
+
     private void iniciarBuclePrincipal() {
-        long referenciaActualizacion = System.nanoTime();
-        long referenciaContador = System.nanoTime();
-        double tiempoTranscurrido, delta = 0;  //Cantidad de tiempo que pasa hasta una actualización
+        referenciaActualizacion = System.nanoTime();
+        referenciaContador = System.nanoTime();
+        delta = 0;  //Cantidad de tiempo que pasa hasta una actualización
         //Bucle del juego
         while (running) {
             final long inicioBucle = System.nanoTime();
@@ -49,7 +54,7 @@ public class EPacman {
             referenciaActualizacion = inicioBucle;
             delta += tiempoTranscurrido / NANOS_POR_APS;
 
-            while (delta >= 1) {
+            if (delta >= 0.3) {
                 actualizar();
                 delta = 0;
             }

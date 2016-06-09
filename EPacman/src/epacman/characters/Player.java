@@ -161,28 +161,32 @@ public class Player extends Character implements Entity {
         }
         switch (direction) {
             case Constants.LEFT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 4) {
                     if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.UP:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 4) {
                     if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
                 break;
             case Constants.RIGHT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 4) {
                     if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.DOWN:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 4) {
                     if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
                         return true;
                     }

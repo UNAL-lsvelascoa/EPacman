@@ -15,7 +15,7 @@ public class DieManager implements StateGame {
 
     @Override
     public void init(){
-        soundManager.playDie();
+        SoundManager.playDie();
     }
     
     @Override
