@@ -31,6 +31,7 @@ public class Player extends Character implements Entity {
     private Sound eatSpecialFoodSound;
     private boolean eating = false;
     private int timeSpecial;
+    private int prevStep;
 
     private Thread thread = new Thread();
 
@@ -65,26 +66,11 @@ public class Player extends Character implements Entity {
                 break;
             }
         }
-        if (counterAnimation == ANIMATION_DURATION) {
-            if (currentIndexSprite == QUANTITY_SPRITES - 1) {
-                animateOrder = false;
-            } else if (currentIndexSprite == 0) {
-                animateOrder = true;
-            }
-            if (animateOrder) {
-                currentIndexSprite++;
-            } else {
-                currentIndexSprite--;
-            }
-            counterAnimation = 0;
-        } else {
-            counterAnimation++;
-        }
+        super.update();
     }
 
     @Override
-    public void paint(Graphics g
-    ) {
+    public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
                 pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
@@ -106,6 +92,9 @@ public class Player extends Character implements Entity {
                     pixel.y += velocity;
                     break;
             }
+        }else{
+            eatFoodSound.close();
+            eating = false;
         }
         if (outBoard()) {
             if (pixel.x < 0 && direction == Constants.LEFT) {
@@ -125,6 +114,11 @@ public class Player extends Character implements Entity {
         center.x = pixel.x + (Variables.spriteRenderWidth / 2);
         center.y = pixel.y + (Variables.spriteRenderHeight / 2);
         indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
+        if (prevStep != indexPosition && BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] != 1) {
+            eatFoodSound.close();
+            eating = false;
+        }
+        prevStep = indexPosition;
     }
 
     private void changeDirection() {
@@ -197,8 +191,6 @@ public class Player extends Character implements Entity {
                 eatSpecialFood();
                 break;
             case 3:
-                eatFoodSound.close();
-                eating = false;
                 break;
         }
     }

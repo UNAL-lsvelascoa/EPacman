@@ -10,11 +10,12 @@ import java.awt.Transparency;
  */
 public class SpecialFood extends Food implements Entity {
 
-    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", 32, 32, Transparency.TRANSLUCENT);
+    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicFood.png", 32, 32, Transparency.TRANSLUCENT);
 
     public SpecialFood(int xPixel, int yPixel) {
         super(xPixel, yPixel);
-        currentIndexSprite = 4;
+        initialSprite = 6;
+        currentIndexSprite = 6;
     }
 
     @Override

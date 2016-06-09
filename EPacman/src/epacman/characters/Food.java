@@ -14,11 +14,11 @@ import java.awt.Transparency;
  */
 public class Food extends Character implements Entity {
 
-    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/Sprites.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
+    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicFood.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
 
     public Food(int xPixel, int yPixel) {
         this.pixel = new Point(xPixel, yPixel);
-        currentIndexSprite = 1;
+        currentIndexSprite = 0;
         this.limitSize = 2;
         this.limit = new Rectangle(xPixel, yPixel, limitSize, limitSize);
         this.center = new Point(xPixel-(limitSize/2), yPixel-(limitSize/2));
@@ -26,21 +26,7 @@ public class Food extends Character implements Entity {
 
     @Override
     public void update() {
-        if (counterAnimation == ANIMATION_DURATION) {
-            if (currentIndexSprite == 1 + QUANTITY_SPRITES - 1) {
-                animateOrder = false;
-            } else if (currentIndexSprite == 1) {
-                animateOrder = true;
-            }
-            if (animateOrder) {
-                currentIndexSprite++;
-            } else {
-                currentIndexSprite--;
-            }
-            counterAnimation = 1;
-        } else {
-            counterAnimation++;
-        }
+        super.update();
     }
 
     @Override
