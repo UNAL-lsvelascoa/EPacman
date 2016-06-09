@@ -30,7 +30,7 @@ public class Enemy extends Character implements Entity {
     private void initEnemy(int xSprite, int ySprite, String uriSpriteSheet) {
         this.sprite = new Point(xSprite, ySprite);
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
-        this.indexPosition = xSprite * ySprite;
+        this.spritePosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
         this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
@@ -107,7 +107,7 @@ public class Enemy extends Character implements Entity {
         limit.y = center.y - (limitSize / 2);
         center.x = pixel.x + (Variables.spriteRenderWidth / 2);
         center.y = pixel.y + (Variables.spriteRenderHeight / 2);
-        indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
+        spritePosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
     }
 
     private void changeDirection() {
@@ -128,22 +128,22 @@ public class Enemy extends Character implements Entity {
         if (pixel.x == (sprite.x) * Variables.spriteRenderWidth && pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
             switch (direction) {
                 case Constants.LEFT:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 0) {
                         return true;
                     }
                     break;
                 case Constants.UP:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 0) {
                         return true;
                     }
                     break;
                 case Constants.RIGHT:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 0) {
                         return true;
                     }
                     break;
                 case Constants.DOWN:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0) {
+                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 0) {
                         return true;
                     }
                     break;

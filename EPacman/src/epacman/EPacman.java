@@ -13,7 +13,7 @@ import epacman.statesmachine.StatesManager;
 public class EPacman {
 
     private static final int NANOS_POR_SEG = 1000000000;
-    private static final byte APS_OBJETIVO = 60;
+    private static final byte APS_OBJETIVO = 30;
     private static final double NANOS_POR_APS = NANOS_POR_SEG / APS_OBJETIVO;
 
     private boolean running = false;
@@ -54,11 +54,10 @@ public class EPacman {
             referenciaActualizacion = inicioBucle;
             delta += tiempoTranscurrido / NANOS_POR_APS;
 
-            if (delta >= 0.3) {
+            if (delta >= 1) {
                 actualizar();
                 delta = 0;
             }
-
             dibujar();
 
             if (System.nanoTime() - referenciaContador > NANOS_POR_SEG) {

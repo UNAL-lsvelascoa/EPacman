@@ -7,6 +7,7 @@ import epacman.control.ControlManager;
 import epacman.sounds.SoundManager;
 import epacman.sprites.SpritesSheet;
 import epacman.statesmachine.states.game.CharactersManager;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -34,20 +35,20 @@ public class Player extends Character implements Entity {
     private void initPlayer(int xSprite, int ySprite, String uriSpriteSheet) {
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.sprite = new Point(xSprite, ySprite);
-        this.indexPosition = xSprite * ySprite;
+        this.spritePosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.limitSize = Variables.spriteRenderWidth / 2;
+        this.limitSize = Variables.spriteRenderWidth;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.velocity = 1.0;
+        this.velocity = 4;
     }
 
     @Override
     public void update() {
         if (alive) {
-            changeDirection();
             movePlayer();
+            changeDirection();
             for (Rectangle rect : FOODS.keySet()) {
                 if (limit.intersects(rect)) {
                     if (FOODS.get(rect)) {
@@ -70,22 +71,46 @@ public class Player extends Character implements Entity {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
                 pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        g.setColor(Color.blue);
+        g.drawRect(sprite.x * Variables.spriteRenderWidth, sprite.y * Variables.spriteRenderHeight, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
+        g.setColor(Color.green);
+        g.drawRect(pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
     }
 
     private void movePlayer() {
         if (!isWall(direction)) {
             switch (direction) {
                 case Constants.LEFT:
-                    pixel.x -= velocity;
+                    if (pixel.x > sprite.x * Variables.spriteRenderWidth
+                            && pixel.x < (sprite.x * Variables.spriteRenderWidth) + velocity) {
+                        pixel.x = (sprite.x * Variables.spriteRenderWidth);
+                    } else {
+                        pixel.x -= velocity;
+                    }
                     break;
                 case Constants.UP:
-                    pixel.y -= velocity;
+                    if (pixel.y > sprite.y * Variables.spriteRenderHeight
+                            && pixel.y < (sprite.y * Variables.spriteRenderHeight) + velocity) {
+                        pixel.y = (sprite.y * Variables.spriteRenderWidth);
+                    } else {
+                        pixel.y -= velocity;
+                    }
                     break;
                 case Constants.RIGHT:
-                    pixel.x += velocity;
+                    if (pixel.x < sprite.x * Variables.spriteRenderWidth
+                            && pixel.x > (sprite.x * Variables.spriteRenderWidth) - velocity) {
+                        pixel.x = (sprite.x * Variables.spriteRenderWidth);
+                    } else {
+                        pixel.x += velocity;
+                    }
                     break;
                 case Constants.DOWN:
-                    pixel.y += velocity;
+                    if (pixel.y < sprite.y * Variables.spriteRenderHeight
+                            && pixel.y > (sprite.y * Variables.spriteRenderHeight) - velocity) {
+                        pixel.y = (sprite.y * Variables.spriteRenderWidth);
+                    } else {
+                        pixel.y += velocity;
+                    }
                     break;
             }
         } else {
@@ -103,18 +128,26 @@ public class Player extends Character implements Entity {
     }
 
     private void changeLimits() {
-        sprite.x = center.x / Variables.spriteRenderWidth;
-        sprite.y = center.y / Variables.spriteRenderHeight;
-        limit.x = center.x - (limitSize / 2);
-        limit.y = center.y - (limitSize / 2);
+        int x = 0;
+        int y = 0;
+        if (direction == Constants.RIGHT) {
+            x = Variables.spriteRenderWidth - 1;
+        }
+        if (direction == Constants.DOWN) {
+            y = Variables.spriteRenderHeight - 1;
+        }
         center.x = pixel.x + (Variables.spriteRenderWidth / 2);
         center.y = pixel.y + (Variables.spriteRenderHeight / 2);
-        indexPosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
-        if (prevStep != indexPosition && BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] != 1) {
+        sprite.x = (pixel.x + x) / Variables.spriteRenderWidth;
+        sprite.y = (pixel.y + y) / Variables.spriteRenderHeight;
+        limit.x = center.x - (limitSize / 2);
+        limit.y = center.y - (limitSize / 2);
+        spritePosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
+        if (prevStep != spritePosition && BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition] != 1) {
             SoundManager.stopEat();
             eating = false;
         }
-        prevStep = indexPosition;
+        prevStep = spritePosition;
     }
 
     private void changeDirection() {
@@ -157,37 +190,37 @@ public class Player extends Character implements Entity {
 
     private boolean isWall(int direction) {
         if (outBoard()) {
-            return false;
+            return true;
         }
         switch (direction) {
             case Constants.LEFT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - 1] == 4) {
-                    if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 4) {
+                    if (pixel.x == sprite.x * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.UP:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition - Constants.BOARD_WIDTH] == 4) {
-                    if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 4) {
+                    if (pixel.y == sprite.y * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
                 break;
             case Constants.RIGHT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + 1] == 4) {
-                    if (pixel.x == (sprite.x) * Variables.spriteRenderWidth) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 4) {
+                    if (pixel.x == sprite.x * Variables.spriteRenderWidth) {
                         return true;
                     }
                 }
                 break;
             case Constants.DOWN:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition + Constants.BOARD_WIDTH] == 4) {
-                    if (pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
+                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 0
+                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 4) {
+                    if (pixel.y == sprite.y * Variables.spriteRenderHeight) {
                         return true;
                     }
                 }
@@ -204,7 +237,7 @@ public class Player extends Character implements Entity {
     }
 
     private void eat() {
-        switch (BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition]) {
+        switch (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition]) {
             case 1:
                 eatFood();
                 break;
@@ -217,7 +250,7 @@ public class Player extends Character implements Entity {
     }
 
     private void eatFood() {
-        BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+        BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition] = 3;
         //eatFoodSound.play();
         if (!eating) {
             eating = true;
@@ -228,7 +261,7 @@ public class Player extends Character implements Entity {
     private void eatSpecialFood() {
         SoundManager.stopEat();
         eating = false;
-        BoardMatrix.CLASSIC_BOARD_FOOD[indexPosition] = 3;
+        BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition] = 3;
         SoundManager.playEat(true);
         if (thread.isAlive()) {
             timeSpecial += Constants.TIME_SPECIAL;

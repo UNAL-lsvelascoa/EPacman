@@ -17,7 +17,7 @@ public class Character implements Entity {
     protected Point pixel;
     protected Point sprite;
 
-    protected int indexPosition;
+    protected int spritePosition;
     protected double velocity = 1;
 
     protected int animationDuration = 1;
@@ -55,7 +55,6 @@ public class Character implements Entity {
     public void paint(Graphics g) {
         g.setColor(Color.red);
         g.drawRect(limit.x, limit.y, limit.width, limit.height);
-        g.setColor(Color.red);
         g.drawRect(center.x, center.y, 1, 1);
     }
 
