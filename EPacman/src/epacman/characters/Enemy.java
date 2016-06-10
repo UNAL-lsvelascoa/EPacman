@@ -37,7 +37,7 @@ public class Enemy extends Character implements Entity {
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
         this.walls.add(0);
-        this.velocity = 3.3547;
+        this.velocity = 2;
     }
 
     @Override

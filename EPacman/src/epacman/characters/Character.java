@@ -25,7 +25,7 @@ public class Character implements Entity {
     protected int spritePosition;
     protected double velocity = 1;
 
-    protected int animationDuration = 1;
+    protected int animationDuration = 4;
     protected int currentIndexSprite = 0;
     protected int initialSprite = 0;
     protected int counterAnimation = 0;

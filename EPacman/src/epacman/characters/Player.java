@@ -44,7 +44,7 @@ public class Player extends Character implements Entity {
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
         this.walls.add(0);
         this.walls.add(4);
-        this.velocity = 4;
+        this.velocity = 3;
     }
 
     @Override
