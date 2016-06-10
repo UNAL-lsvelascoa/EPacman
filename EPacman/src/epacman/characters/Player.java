@@ -37,11 +37,11 @@ public class Player extends Character implements Entity {
         this.sprite = new Point(xSprite, ySprite);
         this.spritePosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.limitSize = Variables.spriteRenderWidth;
+        this.limitSize = Variables.spriteRenderWidth/2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.velocity = 4;
+        this.velocity = 20;
     }
 
     @Override
@@ -49,13 +49,9 @@ public class Player extends Character implements Entity {
         if (alive) {
             movePlayer();
             changeDirection();
-            for (Rectangle rect : FOODS.keySet()) {
+            for (Rectangle rect : FOODS) {
                 if (limit.intersects(rect)) {
-                    if (FOODS.get(rect)) {
-                        eat();
-                        FOODS.replace(rect, false);
-                    } else {
-                    }
+                    eat();
                     break;
                 }
             }
@@ -138,8 +134,8 @@ public class Player extends Character implements Entity {
         }
         center.x = pixel.x + (Variables.spriteRenderWidth / 2);
         center.y = pixel.y + (Variables.spriteRenderHeight / 2);
-        sprite.x = (pixel.x + x) / Variables.spriteRenderWidth;
-        sprite.y = (pixel.y + y) / Variables.spriteRenderHeight;
+        sprite.x = (center.x ) / Variables.spriteRenderWidth;
+        sprite.y = (center.y ) / Variables.spriteRenderHeight;
         limit.x = center.x - (limitSize / 2);
         limit.y = center.y - (limitSize / 2);
         spritePosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
