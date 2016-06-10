@@ -36,13 +36,15 @@ public class Enemy extends Character implements Entity {
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
+        this.walls.add(0);
+        this.velocity = 3.3547;
     }
 
     @Override
     public void update() {
         if (CharactersManager.getPLAYER().isAlive()) {
             changeDirection();
-            moveEnemy();
+            move();
             if (limit.intersects(CharactersManager.getPLAYER().limit) && alive) {
                 if (eateable) {
                     SoundManager.playEatEnemy();
@@ -73,22 +75,9 @@ public class Enemy extends Character implements Entity {
         }
     }
 
-    private void moveEnemy() {
+    protected void move() {
         if (!isWall(direction)) {
-            switch (direction) {
-                case Constants.LEFT:
-                    pixel.x -= velocity;
-                    break;
-                case Constants.UP:
-                    pixel.y -= velocity;
-                    break;
-                case Constants.RIGHT:
-                    pixel.x += velocity;
-                    break;
-                case Constants.DOWN:
-                    pixel.y += velocity;
-                    break;
-            }
+            super.move();
         }
         if (outBoard()) {
             if (pixel.x < 0 && direction == Constants.LEFT) {
@@ -100,14 +89,9 @@ public class Enemy extends Character implements Entity {
         changeLimits();
     }
 
-    private void changeLimits() {
-        sprite.x = center.x / Variables.spriteRenderWidth;
-        sprite.y = center.y / Variables.spriteRenderHeight;
-        limit.x = center.x - (limitSize / 2);
-        limit.y = center.y - (limitSize / 2);
-        center.x = pixel.x + (Variables.spriteRenderWidth / 2);
-        center.y = pixel.y + (Variables.spriteRenderHeight / 2);
-        spritePosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
+    @Override
+    public void changeLimits() {
+        super.changeLimits();
     }
 
     private void changeDirection() {
@@ -121,42 +105,14 @@ public class Enemy extends Character implements Entity {
         }
     }
 
-    private boolean isWall(int direction) {
-        if (outBoard()) {
-            return false;
-        }
-        if (pixel.x == (sprite.x) * Variables.spriteRenderWidth && pixel.y == (sprite.y) * Variables.spriteRenderHeight) {
-            switch (direction) {
-                case Constants.LEFT:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 0) {
-                        return true;
-                    }
-                    break;
-                case Constants.UP:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 0) {
-                        return true;
-                    }
-                    break;
-                case Constants.RIGHT:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 0) {
-                        return true;
-                    }
-                    break;
-                case Constants.DOWN:
-                    if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 0) {
-                        return true;
-                    }
-                    break;
-            }
-        }
-        return false;
+    @Override
+    protected boolean isWall(int direction) {
+        return super.isWall(direction);
     }
 
-    private boolean outBoard() {
-        return sprite.y % Constants.BOARD_HEIGHT == 0
-                || sprite.y % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
-                || sprite.x % Constants.BOARD_WIDTH == 0
-                || sprite.x % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
+    @Override
+    protected boolean outBoard() {
+        return super.outBoard();
     }
 
     public void setEateable(boolean eateable) {

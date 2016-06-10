@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Transparency;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,17 +38,19 @@ public class Player extends Character implements Entity {
         this.sprite = new Point(xSprite, ySprite);
         this.spritePosition = xSprite * ySprite;
         this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.limitSize = Variables.spriteRenderWidth/2;
+        this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.velocity = 20;
+        this.walls.add(0);
+        this.walls.add(4);
+        this.velocity = 4;
     }
 
     @Override
     public void update() {
         if (alive) {
-            movePlayer();
+            move();
             changeDirection();
             for (Rectangle rect : FOODS) {
                 if (limit.intersects(rect)) {
@@ -67,48 +70,12 @@ public class Player extends Character implements Entity {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
                 pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
-        g.setColor(Color.blue);
-        g.drawRect(sprite.x * Variables.spriteRenderWidth, sprite.y * Variables.spriteRenderHeight, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
-        g.setColor(Color.green);
-        g.drawRect(pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
     }
 
-    private void movePlayer() {
+    @Override
+    protected void move() {
         if (!isWall(direction)) {
-            switch (direction) {
-                case Constants.LEFT:
-                    if (pixel.x > sprite.x * Variables.spriteRenderWidth
-                            && pixel.x < (sprite.x * Variables.spriteRenderWidth) + velocity) {
-                        pixel.x = (sprite.x * Variables.spriteRenderWidth);
-                    } else {
-                        pixel.x -= velocity;
-                    }
-                    break;
-                case Constants.UP:
-                    if (pixel.y > sprite.y * Variables.spriteRenderHeight
-                            && pixel.y < (sprite.y * Variables.spriteRenderHeight) + velocity) {
-                        pixel.y = (sprite.y * Variables.spriteRenderWidth);
-                    } else {
-                        pixel.y -= velocity;
-                    }
-                    break;
-                case Constants.RIGHT:
-                    if (pixel.x < sprite.x * Variables.spriteRenderWidth
-                            && pixel.x > (sprite.x * Variables.spriteRenderWidth) - velocity) {
-                        pixel.x = (sprite.x * Variables.spriteRenderWidth);
-                    } else {
-                        pixel.x += velocity;
-                    }
-                    break;
-                case Constants.DOWN:
-                    if (pixel.y < sprite.y * Variables.spriteRenderHeight
-                            && pixel.y > (sprite.y * Variables.spriteRenderHeight) - velocity) {
-                        pixel.y = (sprite.y * Variables.spriteRenderWidth);
-                    } else {
-                        pixel.y += velocity;
-                    }
-                    break;
-            }
+            super.move();
         } else {
             SoundManager.stopEat();
             eating = false;
@@ -123,22 +90,9 @@ public class Player extends Character implements Entity {
         changeLimits();
     }
 
-    private void changeLimits() {
-        int x = 0;
-        int y = 0;
-        if (direction == Constants.RIGHT) {
-            x = Variables.spriteRenderWidth - 1;
-        }
-        if (direction == Constants.DOWN) {
-            y = Variables.spriteRenderHeight - 1;
-        }
-        center.x = pixel.x + (Variables.spriteRenderWidth / 2);
-        center.y = pixel.y + (Variables.spriteRenderHeight / 2);
-        sprite.x = (center.x ) / Variables.spriteRenderWidth;
-        sprite.y = (center.y ) / Variables.spriteRenderHeight;
-        limit.x = center.x - (limitSize / 2);
-        limit.y = center.y - (limitSize / 2);
-        spritePosition = (sprite.y * Constants.BOARD_WIDTH) + sprite.x;
+    @Override
+    public void changeLimits() {
+        super.changeLimits();
         if (prevStep != spritePosition && BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition] != 1) {
             SoundManager.stopEat();
             eating = false;
@@ -184,52 +138,14 @@ public class Player extends Character implements Entity {
         }
     }
 
-    private boolean isWall(int direction) {
-        if (outBoard()) {
-            return true;
-        }
-        switch (direction) {
-            case Constants.LEFT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - 1] == 4) {
-                    if (pixel.x == sprite.x * Variables.spriteRenderWidth) {
-                        return true;
-                    }
-                }
-                break;
-            case Constants.UP:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition - Constants.BOARD_WIDTH] == 4) {
-                    if (pixel.y == sprite.y * Variables.spriteRenderHeight) {
-                        return true;
-                    }
-                }
-                break;
-            case Constants.RIGHT:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + 1] == 4) {
-                    if (pixel.x == sprite.x * Variables.spriteRenderWidth) {
-                        return true;
-                    }
-                }
-                break;
-            case Constants.DOWN:
-                if (BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 0
-                        || BoardMatrix.CLASSIC_BOARD_FOOD[spritePosition + Constants.BOARD_WIDTH] == 4) {
-                    if (pixel.y == sprite.y * Variables.spriteRenderHeight) {
-                        return true;
-                    }
-                }
-                break;
-        }
-        return false;
+    @Override
+    protected boolean isWall(int direction) {
+        return super.isWall(direction);
     }
 
-    private boolean outBoard() {
-        return sprite.y % Constants.BOARD_HEIGHT == 0
-                || sprite.y % Constants.BOARD_HEIGHT == Constants.BOARD_HEIGHT - 1
-                || sprite.x % Constants.BOARD_WIDTH == 0
-                || sprite.x % Constants.BOARD_WIDTH == Constants.BOARD_WIDTH - 1;
+    @Override
+    protected boolean outBoard() {
+        return super.outBoard();
     }
 
     private void eat() {
