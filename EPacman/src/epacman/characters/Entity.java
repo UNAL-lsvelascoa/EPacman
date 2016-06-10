@@ -11,8 +11,8 @@ import java.util.HashMap;
  */
 public interface Entity {
 
-    int SIDE_SPRITE_SHEET = 6;
-    int QUANTITY_SPRITES = 3;
+    int SIDE_SPRITE_SHEET = 8;
+    int QUANTITY_SPRITES = 8;
     int SPRITE_SIDE = 48;
     ArrayList<Rectangle> FOODS = new ArrayList<>();
 

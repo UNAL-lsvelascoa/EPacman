@@ -25,13 +25,12 @@ public class Character implements Entity {
     protected int spritePosition;
     protected double velocity = 1;
 
-    protected int animationDuration = 4;
+    protected int animationDuration = 2;
     protected int currentIndexSprite = 0;
     protected int initialSprite = 0;
     protected int counterAnimation = 0;
     protected int direction = 0;
     protected int predirection = 0;
-    protected boolean animateOrder;
 
     protected int limitSize;
     protected Rectangle limit;
@@ -42,15 +41,9 @@ public class Character implements Entity {
     @Override
     public void update() {
         if (counterAnimation == animationDuration) {
-            if (currentIndexSprite == (QUANTITY_SPRITES + initialSprite) - 1) {
-                animateOrder = false;
-            } else if (currentIndexSprite == initialSprite) {
-                animateOrder = true;
-            }
-            if (animateOrder) {
-                currentIndexSprite++;
-            } else {
-                currentIndexSprite--;
+            currentIndexSprite++;
+            if (currentIndexSprite == QUANTITY_SPRITES + initialSprite) {
+                currentIndexSprite = initialSprite;
             }
             counterAnimation = 0;
         } else {

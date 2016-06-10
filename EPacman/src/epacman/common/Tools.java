@@ -1,7 +1,6 @@
 package epacman.common;
 
-import epacman.sounds.SoundManager;
-import epacman.statesmachine.states.game.CharactersManager;
+import epacman.statesmachine.StatesManager;
 import javax.swing.JFrame;
 
 /**
@@ -11,10 +10,12 @@ import javax.swing.JFrame;
 public class Tools {
 
     public static void changeWindowSize(final JFrame frame) {
+        StatesManager.changeState(Constants.STATE_PAUSE);
         Variables.boardWidth = frame.getWidth();
         Variables.boardHeight = frame.getHeight();
+        Variables.spriteRenderWidth = Variables.boardWidth / Constants.BOARD_WIDTH;
         Variables.spriteRenderHeight = Variables.boardHeight / Constants.BOARD_HEIGHT;
-        Variables.spriteRenderWidth = Variables.spriteRenderHeight;
+        StatesManager.changeState(Constants.STATE_GAME);
     }
 
 }

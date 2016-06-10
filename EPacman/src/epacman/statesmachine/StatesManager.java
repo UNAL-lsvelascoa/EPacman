@@ -34,8 +34,11 @@ public class StatesManager {
         if (currentState != null) {
             currentState.finish();
         }
-        currentState = STATES.get(newState);
-        currentState.init();
+        if (!STATES.isEmpty()) {
+            currentState = STATES.get(newState);
+            currentState.init();
+        }
+
     }
 
     public StateGame getEstadoActual() {

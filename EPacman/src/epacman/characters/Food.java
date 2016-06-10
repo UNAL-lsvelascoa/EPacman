@@ -14,14 +14,14 @@ import java.awt.Transparency;
  */
 public class Food extends Character implements Entity {
 
-    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicFood.png", Constants.SPRITE_WIDTH, Constants.BOARD_HEIGHT, Transparency.TRANSLUCENT);
+    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicFood.png", Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
 
     public Food(int xPixel, int yPixel) {
         this.pixel = new Point(xPixel, yPixel);
         currentIndexSprite = 0;
         this.limitSize = 2;
         this.limit = new Rectangle(xPixel, yPixel, limitSize, limitSize);
-        this.center = new Point(xPixel-(limitSize/2), yPixel-(limitSize/2));
+        this.center = new Point(xPixel - (limitSize / 2), yPixel - (limitSize / 2));
     }
 
     @Override

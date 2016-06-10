@@ -31,7 +31,7 @@ public class Enemy extends Character implements Entity {
         this.sprite = new Point(xSprite, ySprite);
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.spritePosition = xSprite * ySprite;
-        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH/2, Constants.SPRITE_HEIGHT/2, Transparency.TRANSLUCENT);
         this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));

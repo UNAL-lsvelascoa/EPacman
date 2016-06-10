@@ -14,11 +14,11 @@ public class SpritesSheet {
 
     final private Sprite[] sprites;
 
-    private static final ResourcesLoader loader = new ResourcesLoader();
+    private static final ResourcesLoader LOADER = new ResourcesLoader();
 
     public SpritesSheet(final String uri, final int spriteWidth, final int spriteHeight, final int transparency) {
         BufferedImage image;
-        image = loader.loadImage(uri, transparency);
+        image = LOADER.loadImage(uri, transparency);
 
         sheetPixelWidth = image.getWidth();
         altoHojaEnPixeles = image.getHeight();

@@ -14,7 +14,7 @@ import java.awt.Transparency;
  */
 public class Board {
 
-    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicBoard.png", Constants.SPRITE_HEIGHT, Constants.SPRITE_WIDTH, Transparency.TRANSLUCENT);
+    private final SpritesSheet classicBoard = new SpritesSheet("/media/sprites/ClassicBoard.png", Constants.SPRITE_HEIGHT/2, Constants.SPRITE_WIDTH/2, Transparency.TRANSLUCENT);
 
     public void update() {
 
