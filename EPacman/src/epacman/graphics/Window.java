@@ -1,53 +1,78 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package epacman.graphics;
 
 import epacman.common.Tools;
 import epacman.common.Variables;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 
-public class Window extends JFrame implements ComponentListener{
+/**
+ *
+ * @author ErickSteven
+ */
+public class Window extends JFrame {
 
-    private final String title;
+    private final MyCanvas canvas;
 
-    public Window(final String title, final MyCanvas surface) {
-        this.title = title;
-        initWindow(surface);
+    /**
+     * Creates new form NewJFrame
+     *
+     * @param surface
+     */
+    public Window(MyCanvas surface) {
+        this.canvas = surface;
+        initComponents();
+        init();
     }
 
-    private void initWindow(final MyCanvas surface) {
-        setTitle(title);
+    private void init() {
         //setUndecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setIconImage(null);
-        setLayout(new BorderLayout());
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(400, 300));
-        setSize(Variables.boardWidth, Variables.boardHeight);
-        add(surface);
         setLocationRelativeTo(null);
         setVisible(true);
-        Tools.changeWindowSize(this);
-        addComponentListener(this);
+        Tools.changeWindowSize(canvas);
     }
 
-    @Override
-    public void componentResized(ComponentEvent e) {
-        Tools.changeWindowSize(this);
-    }
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    @Override
-    public void componentMoved(ComponentEvent e) {
-    }
+        surface = canvas;
+        jPBPower = new javax.swing.JProgressBar();
 
-    @Override
-    public void componentShown(ComponentEvent e) {
-    }
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-    @Override
-    public void componentHidden(ComponentEvent e) {
-    }
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPBPower, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(surface, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPBPower, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(surface, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar jPBPower;
+    private java.awt.Canvas surface;
+    // End of variables declaration//GEN-END:variables
 }

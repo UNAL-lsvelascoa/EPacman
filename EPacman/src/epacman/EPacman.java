@@ -4,6 +4,7 @@ import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
+import epacman.graphics.Window;
 import epacman.statesmachine.StatesManager;
 
 /**
@@ -34,7 +35,7 @@ public class EPacman {
     private void iniciarJuego() {
         running = true;
         surface = new MyCanvas();
-        new Window(title, surface);
+        new Window(surface);
         stateManager = new StatesManager();
     }
 
