@@ -4,7 +4,6 @@ import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.graphics.MyCanvas;
 import epacman.graphics.Window;
-import epacman.graphics.Window;
 import epacman.statesmachine.StatesManager;
 
 /**
@@ -18,14 +17,12 @@ public class EPacman {
     private static final double NANOS_POR_APS = NANOS_POR_SEG / APS_OBJETIVO;
 
     private boolean running = false;
-    private final String title;
     private static int aps = 0, fps = 0;
 
     private MyCanvas surface;
     private StatesManager stateManager;
 
-    private EPacman(final String title) {
-        this.title = title;
+    private EPacman() {
         Variables.spriteRenderHeight = (int) (Constants.SCREEN_HEIGHT / Constants.BOARD_HEIGHT);
         Variables.spriteRenderWidth = Variables.spriteRenderHeight;
         Variables.boardHeight = Constants.BOARD_HEIGHT * Variables.spriteRenderHeight;
@@ -81,7 +78,7 @@ public class EPacman {
     }
 
     public static void main(String[] args) {
-        EPacman juego = new EPacman("E-Pacman");
+        EPacman juego = new EPacman();
         juego.iniciarJuego();
         juego.iniciarBuclePrincipal();
     }

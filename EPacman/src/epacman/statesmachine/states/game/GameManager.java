@@ -11,6 +11,7 @@ public class GameManager implements StateGame {
     private final MapManager mapManager = new MapManager();
     private final CharactersManager charactersManager = new CharactersManager();
     private final SoundManager soundManager = new SoundManager();
+    private final DataManager dataManager = new DataManager();
 
     @Override
     public void init() {
@@ -22,12 +23,14 @@ public class GameManager implements StateGame {
     public void update() {
         mapManager.update();
         charactersManager.update();
+        dataManager.update();
     }
 
     @Override
     public void paint(Graphics g) {
         mapManager.paint(g);
         charactersManager.paint(g);
+        dataManager.paint(g);
     }
 
     @Override

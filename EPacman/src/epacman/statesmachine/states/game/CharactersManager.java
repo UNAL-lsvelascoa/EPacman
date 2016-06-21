@@ -2,12 +2,13 @@ package epacman.statesmachine.states.game;
 
 import epacman.characters.Enemy;
 import epacman.characters.Player;
+import epacman.common.Constants;
 import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
 
 public class CharactersManager {
 
-    private static final Player PLAYER = new Player(14, 23, "/media/sprites/ClassicPlayer.png");
+    private static final Player PLAYER = new Player(14, 23, Constants.URI_CLASSIC_SPRITES_PLAYER);
     private static final Enemy ENEMY1 = new Enemy(12, 13, "/media/sprites/ClassicEnemy1.png");
     private static final Enemy ENEMY2 = new Enemy(12, 15, "/media/sprites/ClassicEnemy2.png");
     private static final Enemy ENEMY3 = new Enemy(15, 13, "/media/sprites/ClassicEnemy3.png");

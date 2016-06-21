@@ -25,6 +25,8 @@ public interface Constants {
     int STATE_GAME = 0;
     int STATE_PAUSE = 1;
     
+    String URI_CLASSIC_SPRITES_PLAYER = "/media/sprites/ClassicPlayer.png";
+    
     String URI_CLASSIC_SOUND_EAT_FOOD = "src/media/audio/ClassicEatFood.wav";
     String URI_CLASSIC_SOUND_EAT_SPECIAL_FOOD = "src/media/audio/ClassicEatSpecialFood.wav";
     String URI_CLASSIC_SOUND_EAT_ENEMY = "src/media/audio/ClassicEatEnemy.wav";
