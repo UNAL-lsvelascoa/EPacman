@@ -3,7 +3,6 @@ package epacman.characters;
 import epacman.common.BoardMatrix;
 import epacman.common.Constants;
 import epacman.common.Variables;
-import epacman.sounds.SoundManager;
 import epacman.sprites.SpritesSheet;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -54,12 +53,12 @@ public class Character implements Entity {
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.red);
-        g.drawRect(limit.x, limit.y, limit.width, limit.height);
-        g.drawRect(center.x, center.y, 1, 1);
+        g.drawRect(limit.x + Variables.marginLeft, limit.y, limit.width, limit.height);
+        g.drawRect(center.x + Variables.marginLeft, center.y, 1, 1);
         g.setColor(Color.blue);
-        g.drawRect(sprite.x * Variables.spriteRenderWidth, sprite.y * Variables.spriteRenderHeight, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
+        g.drawRect((sprite.x * Variables.spriteRenderWidth) + Variables.marginLeft, sprite.y * Variables.spriteRenderHeight, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
         g.setColor(Color.green);
-        g.drawRect(pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
+        g.drawRect(pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight);
     }
 
     public void changeLimits() {

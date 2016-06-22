@@ -1,13 +1,11 @@
 package epacman.characters;
 
-import epacman.common.BoardMatrix;
 import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.sprites.SpritesSheet;
 import java.awt.Graphics;
 import java.awt.Transparency;
 import java.util.Random;
-import epacman.sounds.Sound;
 import epacman.sounds.SoundManager;
 import epacman.statesmachine.StatesManager;
 import epacman.statesmachine.states.game.CharactersManager;
@@ -65,13 +63,13 @@ public class Enemy extends Character implements Entity {
         super.paint(g);
         if (eateable && alive) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (4 * SIDE_SPRITE_SHEET)).getImagen(),
-                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                    pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         } else if (alive) {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                    pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         } else {
             g.drawImage(spritesSheet.getSprite(currentIndexSprite + (5 * SIDE_SPRITE_SHEET)).getImagen(),
-                    pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                    pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         }
     }
 

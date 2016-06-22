@@ -5,7 +5,6 @@ import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.characters.Food;
 import epacman.characters.SpecialFood;
-import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
 
 /**

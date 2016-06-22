@@ -31,8 +31,7 @@ public class Food extends Character implements Entity {
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
-        g.drawRect(limit.x, limit.y, limit.width, limit.height);
+        g.drawImage(classicBoard.getSprite(currentIndexSprite).getImagen(), pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
         if (!FOODS.contains(limit)) {
             FOODS.add(new Rectangle(limit));
         }

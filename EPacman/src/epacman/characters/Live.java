@@ -41,27 +41,6 @@ public class Live extends Character implements Entity {
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
-
-    @Override
-    protected void move() {
-        
-    }
-
-    @Override
-    public void changeLimits() {
-    }
-
-
-    @Override
-    protected boolean isWall(int direction) {
-        return super.isWall(direction);
-    }
-
-    @Override
-    protected boolean outBoard() {
-        return super.outBoard();
-    }
-
 }

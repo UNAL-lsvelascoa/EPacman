@@ -69,7 +69,7 @@ public class Player extends Character implements Entity {
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                pixel.x, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
     @Override

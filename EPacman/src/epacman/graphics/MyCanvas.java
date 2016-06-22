@@ -1,5 +1,6 @@
 package epacman.graphics;
 
+import epacman.common.Constants;
 import epacman.common.Variables;
 import epacman.control.ControlManager;
 import epacman.statesmachine.StatesManager;
@@ -28,6 +29,7 @@ public class MyCanvas extends Canvas {
          * Solo nosotros podremos repintar el canvas
          */
         setIgnoreRepaint(true);
+        //setLocation((Variables.windowWidth / 2) - (Variables.boardWidth / 2), 0);
         setPreferredSize(new Dimension(width, height));
         addKeyListener(ControlManager.KEYBOARD);
         setFocusable(true);
@@ -45,7 +47,7 @@ public class MyCanvas extends Canvas {
         Graphics g = bufferS.getDrawGraphics();
 
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, Variables.windowWidth, Variables.windowHeight);
         statesManager.paint(g);
 
         /*

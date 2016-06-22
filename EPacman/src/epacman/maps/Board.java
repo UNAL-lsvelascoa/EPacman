@@ -24,7 +24,7 @@ public class Board {
         for (int i = 0; i < Constants.BOARD_HEIGHT; i++) {
             for (int j = 0; j < Constants.BOARD_WIDTH; j++) {
                 g.drawImage(classicBoard.getSprite(BoardMatrix.CLASSIC_BOARD_SPRITES[j + (i * Constants.BOARD_WIDTH)]).getImagen(),
-                        j * Variables.spriteRenderWidth, i * Variables.spriteRenderHeight,
+                        (j * Variables.spriteRenderWidth)+Variables.marginLeft, i * Variables.spriteRenderHeight,
                         Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
             }
         }
