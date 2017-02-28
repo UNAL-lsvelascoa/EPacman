@@ -18,7 +18,7 @@ public class InitGameManager implements StateGame {
     @Override
     public void init(){
         Variables.state = Constants.STATE_PAUSE;
-        SoundManager.playInitGame();
+        soundManager.playInitGame();
     }
     
     @Override
