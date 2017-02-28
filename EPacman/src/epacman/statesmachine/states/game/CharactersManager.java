@@ -48,5 +48,19 @@ public class CharactersManager {
     public static Player getPLAYER() {
         return PLAYER;
     }
+    public static Enemy getENEMY(int enemy) {
+        switch(enemy){
+            case 1:
+                return ENEMY1;
+            case 2:
+                return ENEMY2;
+            case 3:
+                return ENEMY3;
+            case 4:
+                return ENEMY4;
+            default:
+                return null;
+        }
+    }
 
 }

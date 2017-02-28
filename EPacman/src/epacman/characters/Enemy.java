@@ -9,6 +9,7 @@ import java.util.Random;
 import epacman.sounds.SoundManager;
 import epacman.statesmachine.StatesManager;
 import epacman.statesmachine.states.game.CharactersManager;
+import epacman.statesmachine.states.game.DataManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -26,15 +27,23 @@ public class Enemy extends Character implements Entity {
     }
 
     private void initEnemy(int xSprite, int ySprite, String uriSpriteSheet) {
+        reset(xSprite, ySprite);
+        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.walls.add(0);
+    }
+    
+    public void reset(int xSprite, int ySprite){
         this.sprite = new Point(xSprite, ySprite);
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.spritePosition = xSprite * ySprite;
-        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
-        this.limitSize = Variables.spriteRenderWidth / 2;
         this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
                 (pixel.y + (Variables.spriteRenderHeight / 2)));
+        this.limitSize = Variables.spriteRenderWidth / 2;
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.walls.add(0);
+        this.direction = Constants.RIGHT;
+        this.predirection = Constants.RIGHT;
+        this.counterAnimation = 0;
+        this.currentIndexSprite = 2;
         this.velocity = 1;
     }
 
@@ -50,10 +59,7 @@ public class Enemy extends Character implements Entity {
                             SoundManager.playEatEnemy();
                             alive = false;
                         } else {
-                            SoundManager.playDie();
-                            StatesManager.changeState(Constants.STATE_PAUSE);
-                            CharactersManager.getPLAYER().setAlive(false);
-                            SoundManager.stopEat();
+                            StatesManager.changeState(Constants.STATE_DIE);
                         }
                     }
                 }

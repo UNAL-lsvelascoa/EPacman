@@ -2,12 +2,14 @@ package epacman.statesmachine.states.game;
 
 import epacman.characters.Live;
 import epacman.common.Constants;
+import epacman.statesmachine.StatesManager;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class DataManager {
 
     private static final ArrayList<Live> LIVES = new ArrayList<>();
+
     
     public DataManager(){
         LIVES.add(new Live(29, 1, Constants.URI_CLASSIC_SPRITES_PLAYER));
@@ -16,15 +18,23 @@ public class DataManager {
     }
 
     public void update() {
-        for(Live live : LIVES){
+        LIVES.forEach((live) -> {
             live.update();
-        }
+        });
     }
 
     public void paint(Graphics g) {
-        for(Live live : LIVES){
+        LIVES.forEach((live) -> {
             live.paint(g);
-        }
+        });
     }
 
+    public static ArrayList<Live> getLives() {
+        return LIVES;
+    }
+    
+    public static void die() {
+        LIVES.remove(0);
+    }
+    
 }

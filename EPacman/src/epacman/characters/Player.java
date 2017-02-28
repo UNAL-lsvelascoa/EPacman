@@ -34,17 +34,26 @@ public class Player extends Character implements Entity {
     }
 
     private void initPlayer(int xSprite, int ySprite, String uriSpriteSheet) {
+        reset(xSprite, ySprite);
+        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.walls.add(0);
+        this.walls.add(4);
+    }
+
+    public void reset(int xSprite, int ySprite) {
         this.pixel = new Point(xSprite * Variables.spriteRenderWidth, ySprite * Variables.spriteRenderHeight);
         this.sprite = new Point(xSprite, ySprite);
         this.spritePosition = xSprite * ySprite;
-        this.spritesSheet = new SpritesSheet(uriSpriteSheet, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, Transparency.TRANSLUCENT);
+        this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)), (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limitSize = Variables.spriteRenderWidth / 2;
-        this.center = new Point((pixel.x + (Variables.spriteRenderWidth / 2)),
-                (pixel.y + (Variables.spriteRenderHeight / 2)));
         this.limit = new Rectangle(center.x - (limitSize / 2), center.y - (limitSize / 2), limitSize, limitSize);
-        this.walls.add(0);
-        this.walls.add(4);
+        this.alive = true;
         this.velocity = 3;
+        this.direction = Constants.RIGHT;
+        this.predirection = Constants.RIGHT;
+        this.currentIndexSprite = 2;
+        this.counterAnimation = 0;
+        this.animationDuration = 2;
     }
 
     @Override
@@ -74,16 +83,8 @@ public class Player extends Character implements Entity {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        switch (Variables.state) {
-            case Constants.STATE_PAUSE:
-                g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                        pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
-                break;
-            case Constants.STATE_GAMING:
-                g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                        pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
-                break;
-        }
+        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
+                pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
     }
 
     @Override

@@ -1,6 +1,5 @@
-package epacman.statesmachine.initgame;
+package epacman.statesmachine.states.initgame;
 
-import epacman.statesmachine.pause.*;
 import epacman.statesmachine.states.die.*;
 import epacman.statesmachine.states.game.*;
 import epacman.common.Constants;
@@ -19,6 +18,11 @@ public class InitGameManager implements StateGame {
     public void init(){
         Variables.state = Constants.STATE_PAUSE;
         soundManager.playInitGame();
+        CharactersManager.getPLAYER().reset(14, 23);
+        CharactersManager.getENEMY(1).reset(12, 13);
+        CharactersManager.getENEMY(2).reset(12, 15);
+        CharactersManager.getENEMY(3).reset(15, 13);
+        CharactersManager.getENEMY(4).reset(15, 15);
     }
     
     @Override

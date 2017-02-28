@@ -25,11 +25,11 @@ public class Character implements Entity {
     protected double velocity = 1;
 
     protected int animationDuration = 2;
-    protected int currentIndexSprite = 2;
+    protected int currentIndexSprite;
     protected int initialSprite = 0;
-    protected int counterAnimation = 0;
-    protected int direction = 0;
-    protected int predirection = 0;
+    protected int counterAnimation;
+    protected int direction;
+    protected int predirection;
 
     protected int limitSize;
     protected Rectangle limit;

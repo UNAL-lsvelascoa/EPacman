@@ -14,10 +14,13 @@ public class DieManager implements StateGame {
     private final SoundManager soundManager = new SoundManager();
 
     @Override
-    public void init(){
+    public void init() {
+        CharactersManager.getPLAYER().setAlive(false);
+        SoundManager.stopEat();
         SoundManager.playDie();
+        DataManager.die();
     }
-    
+
     @Override
     public void update() {
         charactersManager.update();

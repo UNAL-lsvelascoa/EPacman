@@ -27,6 +27,7 @@ public interface Constants {
     int STATE_GAMING = 1;
     int STATE_PAUSE = 2;
     int STATE_DIE = 3;
+    int STATE_INITIAL_MENU = 4;
     
     String URI_CLASSIC_SPRITES_PLAYER = "/media/sprites/ClassicPlayer.png";
     

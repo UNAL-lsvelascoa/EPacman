@@ -3,6 +3,8 @@ package epacman.sounds;
 import epacman.common.Constants;
 import epacman.common.ResourcesLoader;
 import epacman.common.Variables;
+import epacman.statesmachine.StatesManager;
+import epacman.statesmachine.states.game.DataManager;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,8 +72,24 @@ public class Sound implements LineListener {
     public void update(LineEvent event) {
         LineEvent.Type type = event.getType();
         if (type == LineEvent.Type.STOP) {
-            if (uri.equals(Constants.URI_CLASSIC_SOUND_INIT_GAME)) {
-                Variables.state = Constants.STATE_GAMING;
+            switch (uri) {
+                case Constants.URI_CLASSIC_SOUND_INIT_GAME:
+                    StatesManager.changeState(Constants.STATE_GAMING);
+                    break;
+                case Constants.URI_CLASSIC_SOUND_DIE:
+            {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Sound.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+                    if(DataManager.getLives().isEmpty()){
+                        StatesManager.changeState((Constants.STATE_INITIAL_MENU));
+                    }else{
+                        StatesManager.changeState(Constants.STATE_INIT_GAME);
+                    }
+                    break;
             }
             if (inLoop) {
                 playInLoop();
