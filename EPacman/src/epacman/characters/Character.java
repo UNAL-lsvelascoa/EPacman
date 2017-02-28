@@ -25,7 +25,7 @@ public class Character implements Entity {
     protected double velocity = 1;
 
     protected int animationDuration = 2;
-    protected int currentIndexSprite = 0;
+    protected int currentIndexSprite = 2;
     protected int initialSprite = 0;
     protected int counterAnimation = 0;
     protected int direction = 0;
@@ -39,14 +39,18 @@ public class Character implements Entity {
 
     @Override
     public void update() {
-        if (counterAnimation == animationDuration) {
-            currentIndexSprite++;
-            if (currentIndexSprite == QUANTITY_SPRITES + initialSprite) {
-                currentIndexSprite = initialSprite;
-            }
-            counterAnimation = 0;
-        } else {
-            counterAnimation++;
+        switch (Variables.state) {
+            case Constants.STATE_GAMING:
+                if (counterAnimation == animationDuration) {
+                    currentIndexSprite++;
+                    if (currentIndexSprite == QUANTITY_SPRITES + initialSprite) {
+                        currentIndexSprite = initialSprite;
+                    }
+                    counterAnimation = 0;
+                } else {
+                    counterAnimation++;
+                }
+                break;
         }
     }
 

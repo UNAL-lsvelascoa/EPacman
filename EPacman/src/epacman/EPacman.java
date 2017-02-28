@@ -12,9 +12,9 @@ import epacman.statesmachine.StatesManager;
  */
 public class EPacman {
 
-    private static final double NANOS_POR_SEG = 1000000000;
-    private static final byte APS_OBJETIVO = 60;
-    private static final double NANOS_POR_APS = NANOS_POR_SEG / APS_OBJETIVO;
+    private static final double NANOS_BY_SEC = 1000000000;
+    private static final byte APS_GOAL = 60;
+    private static final double NANOS_BY_APS = NANOS_BY_SEC / APS_GOAL;
 
     private boolean running = false;
     private static int aps = 0, fps = 0;
@@ -29,7 +29,7 @@ public class EPacman {
         Variables.boardWidth = Constants.BOARD_WIDTH * Variables.spriteRenderWidth;
     }
 
-    private void iniciarJuego() {
+    private void initGame() {
         running = true;
         surface = new MyCanvas();
         new Window(surface);
@@ -41,7 +41,7 @@ public class EPacman {
     double tiempoTranscurrido;
     double delta = 0;  //Cantidad de tiempo que pasa hasta una actualización
 
-    private void iniciarBuclePrincipal() {
+    private void initMainLoop() {
         referenciaActualizacion = System.nanoTime();
         referenciaContador = System.nanoTime();
         delta = 0;  //Cantidad de tiempo que pasa hasta una actualización
@@ -50,15 +50,15 @@ public class EPacman {
             final long inicioBucle = System.nanoTime();
             tiempoTranscurrido = inicioBucle - referenciaActualizacion;
             referenciaActualizacion = inicioBucle;
-            delta += tiempoTranscurrido / NANOS_POR_APS;
+            delta += tiempoTranscurrido / NANOS_BY_APS;
 
             if (delta >= 1) {
-                actualizar();
+                update();
                 delta = 0;
             }
-            dibujar();
+            paint();
 
-            if (System.nanoTime() - referenciaContador > NANOS_POR_SEG) {
+            if (System.nanoTime() - referenciaContador > NANOS_BY_SEC) {
                 System.out.println("APS: " + aps + " " + "FPS: " + fps);
                 aps = 0;
                 fps = 0;
@@ -67,19 +67,19 @@ public class EPacman {
         }
     }
 
-    private void actualizar() {
+    private void update() {
         stateManager.update();
         aps++;
     }
 
-    private void dibujar() {
+    private void paint() {
         surface.paint(stateManager);
         fps++;
     }
 
     public static void main(String[] args) {
-        EPacman juego = new EPacman();
-        juego.iniciarJuego();
-        juego.iniciarBuclePrincipal();
+        EPacman mainGame = new EPacman();
+        mainGame.initGame();
+        mainGame.initMainLoop();
     }
 }

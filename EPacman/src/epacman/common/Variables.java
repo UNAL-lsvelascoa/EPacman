@@ -15,5 +15,6 @@ public class Variables {
     public static boolean playingBackground = false;
     public static int backgroundSoundType = Constants.TYPE_BACKGROUND_NORMAL;
     public static int marginLeft;
+    public static int state;
 
 }

@@ -49,18 +49,24 @@ public class Player extends Character implements Entity {
 
     @Override
     public void update() {
-        if (alive) {
-            move();
-            changeDirection();
-            for (Rectangle rect : FOODS) {
-                if (limit.intersects(rect)) {
-                    eat();
-                    break;
+        switch (Variables.state) {
+            case Constants.STATE_PAUSE:
+                break;
+            case Constants.STATE_GAMING:
+                if (alive) {
+                    move();
+                    changeDirection();
+                    for (Rectangle rect : FOODS) {
+                        if (limit.intersects(rect)) {
+                            eat();
+                            break;
+                        }
+                    }
+                } else {
+                    direction = Constants.DIE;
+                    animationDuration = 20;
                 }
-            }
-        } else {
-            direction = Constants.DIE;
-            animationDuration = 20;
+                break;
         }
         super.update();
     }
@@ -68,8 +74,16 @@ public class Player extends Character implements Entity {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
-                pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+        switch (Variables.state) {
+            case Constants.STATE_PAUSE:
+                g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
+                        pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                break;
+            case Constants.STATE_GAMING:
+                g.drawImage(spritesSheet.getSprite(currentIndexSprite + (direction * SIDE_SPRITE_SHEET)).getImagen(),
+                        pixel.x + Variables.marginLeft, pixel.y, Variables.spriteRenderWidth, Variables.spriteRenderHeight, null);
+                break;
+        }
     }
 
     @Override

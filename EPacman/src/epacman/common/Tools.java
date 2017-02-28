@@ -19,6 +19,6 @@ public class Tools {
         Variables.windowWidth = frame.getWidth();
         Variables.marginLeft = (Variables.windowWidth / 2) - (Variables.boardWidth / 2);
         //Variables.spriteRenderWidth = Variables.boardWidth / Constants.BOARD_WIDTH;
-        StatesManager.changeState(Constants.STATE_GAME);
+        StatesManager.changeState(Constants.STATE_INIT_GAME);
     }
 }

@@ -40,20 +40,24 @@ public class Enemy extends Character implements Entity {
 
     @Override
     public void update() {
-        if (CharactersManager.getPLAYER().isAlive()) {
-            changeDirection();
-            move();
-            if (limit.intersects(CharactersManager.getPLAYER().limit) && alive) {
-                if (eateable) {
-                    SoundManager.playEatEnemy();
-                    alive = false;
-                } else {
-                    SoundManager.playDie();
-                    StatesManager.changeState(Constants.STATE_PAUSE);
-                    CharactersManager.getPLAYER().setAlive(false);
-                    SoundManager.stopEat();
+        switch (Variables.state) {
+            case Constants.STATE_GAMING:
+                if (CharactersManager.getPLAYER().isAlive()) {
+                    changeDirection();
+                    move();
+                    if (limit.intersects(CharactersManager.getPLAYER().limit) && alive) {
+                        if (eateable) {
+                            SoundManager.playEatEnemy();
+                            alive = false;
+                        } else {
+                            SoundManager.playDie();
+                            StatesManager.changeState(Constants.STATE_PAUSE);
+                            CharactersManager.getPLAYER().setAlive(false);
+                            SoundManager.stopEat();
+                        }
+                    }
                 }
-            }
+                break;
         }
         super.update();
     }

@@ -14,6 +14,7 @@ public class SoundManager {
     private static final Sound backgroundNormal = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_NORMAL);
     private static final Sound backgroundSpecial = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_SPECIAL);
     private static final Sound backgroundToHome = new Sound(Constants.URI_CLASSIC_SOUND_BACKGROUND_TO_HOME);
+    private static final Sound initGame = new Sound(Constants.URI_CLASSIC_SOUND_INIT_GAME);
     private static final Sound die = new Sound(Constants.URI_CLASSIC_SOUND_DIE);
 
     public static void playEat(boolean special) {
@@ -30,6 +31,10 @@ public class SoundManager {
 
     public static void playEatEnemy() {
         eatEnemy.play();
+    }
+
+    public static void playInitGame() {
+        initGame.play();
     }
 
     public void playBackground(final int typeBackground) {
@@ -84,6 +89,7 @@ public class SoundManager {
         backgroundNormal.close();
         backgroundSpecial.close();
         backgroundToHome.close();
+        initGame.close();
         die.close();
     }
 }

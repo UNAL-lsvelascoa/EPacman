@@ -1,6 +1,8 @@
 package epacman.statesmachine;
 
 import epacman.common.Constants;
+import epacman.statesmachine.initgame.InitGameManager;
+import epacman.statesmachine.pause.PauseManager;
 import epacman.statesmachine.states.die.DieManager;
 import epacman.statesmachine.states.game.GameManager;
 import java.awt.Graphics;
@@ -16,9 +18,11 @@ public class StatesManager {
     }
 
     private void initStates() {
+        STATES.add(new InitGameManager());
         STATES.add(new GameManager());
+        STATES.add(new PauseManager());
         STATES.add(new DieManager());
-        changeState(Constants.STATE_GAME);
+        changeState(Constants.STATE_INIT_GAME);
     }
 
     public void update() {
