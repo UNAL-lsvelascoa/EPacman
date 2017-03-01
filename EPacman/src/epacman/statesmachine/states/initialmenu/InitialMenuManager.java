@@ -1,21 +1,15 @@
 package epacman.statesmachine.states.initialmenu;
 
-import epacman.statesmachine.states.die.*;
-import epacman.statesmachine.states.game.*;
-import epacman.common.Constants;
-import epacman.common.Variables;
-import epacman.sounds.SoundManager;
 import epacman.statesmachine.StateGame;
 import java.awt.Graphics;
+import javax.swing.JButton;
 
 public class InitialMenuManager implements StateGame {
 
-    private final MapManager mapManager = new MapManager();
-    private final CharactersManager charactersManager = new CharactersManager();
-    private final SoundManager soundManager = new SoundManager();
-
     @Override
     public void init() {
+        JButton btnInitGame = new JButton("Jugar");
+        
     }
 
     @Override

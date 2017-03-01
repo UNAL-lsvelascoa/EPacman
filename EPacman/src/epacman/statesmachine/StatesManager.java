@@ -24,7 +24,7 @@ public class StatesManager {
         STATES.add(new PauseManager());
         STATES.add(new DieManager());
         STATES.add(new InitialMenuManager());
-        changeState(Constants.STATE_INIT_GAME);
+        changeState(Constants.STATE_INITIAL_MENU);
     }
 
     public void update() {

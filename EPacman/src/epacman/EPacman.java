@@ -31,9 +31,10 @@ public class EPacman {
 
     private void initGame() {
         running = true;
-        surface = new MyCanvas();
-        new Window(surface);
         stateManager = new StatesManager();
+        surface = new MyCanvas(stateManager);
+        
+        new Window(surface);
     }
 
     long referenciaActualizacion = System.nanoTime();
@@ -73,7 +74,7 @@ public class EPacman {
     }
 
     private void paint() {
-        surface.paint(stateManager);
+        surface.repaint();
         fps++;
     }
 

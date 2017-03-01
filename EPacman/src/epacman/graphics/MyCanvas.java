@@ -10,16 +10,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
-public class MyCanvas extends Canvas {
+public class MyCanvas extends JPanel {
 
     private final int width;
     private final int height;
+    private StatesManager statesManager;
 
-    public MyCanvas() {
+    public MyCanvas(StatesManager statesManager) {
         this.width = Variables.boardWidth;
         this.height = Variables.boardHeight;
-
+        this.statesManager = statesManager;
         initMyCanvas();
     }
 
@@ -36,16 +39,16 @@ public class MyCanvas extends Canvas {
         requestFocus();
     }
 
-    public void paint(StatesManager statesManager) {
-        BufferStrategy bufferS = getBufferStrategy();
+    @Override
+    public void paint(Graphics g) {
+        /*BufferStrategy bufferS = getBufferStrategy();
         if (bufferS == null) {
             createBufferStrategy(2);
             return;
-        }
+        }*/
 
         // g va a pintar dentro del buffer
-        Graphics g = bufferS.getDrawGraphics();
-
+        //Graphics g = bufferS.getDrawGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Variables.windowWidth, Variables.windowHeight);
         statesManager.paint(g);
@@ -56,6 +59,6 @@ public class MyCanvas extends Canvas {
          */
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
-        bufferS.show();
+        //bufferS.show();
     }
 }
